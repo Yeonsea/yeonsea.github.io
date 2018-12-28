@@ -529,14 +529,16 @@
       
         
           
-          
+            <p>
+              
 课程课程
 开始一个最简单的RESTFul API项目RESTful APIRepresentational State Transfer
 所有的东西都是资源，所有的操作都是通过对资源的增删改查（CRUD）实现
 对资源的增删改查对应对URL的操作（POST,DELETE,PUT,GET）
 无状态的
 
-          ...
+              ...
+            </p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -725,7 +727,8 @@
       
         
           
-          
+            <p>
+              
 
 练得身形如鹤形，千株松下两函经。我来问道无馀说，云在青霄水在瓶。
 
@@ -733,7 +736,8 @@
 选得幽居惬野情，终年无送亦无迎。有时直上孤峰顶，月下披云啸一声。
 
 
-          
+              
+            </p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -916,9 +920,11 @@
       
         
           
-          
+            <p>
+              
 Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in
-          ...
+              ...
+            </p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1174,7 +1180,7 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
 
   
     
-      
+    
   
   <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
 
@@ -1247,28 +1253,29 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
 
 
 
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
   
   
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
   <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
   <script>
     var GUEST = ['nick','mail','link'];
     var guest = 'nick,mail,link';
     guest = guest.split(',').filter(function (item) {
-      return GUEST.indexOf(item)>-1;
+      return GUEST.indexOf(item) > -1;
     });
     new Valine({
-        el: '#comments' ,
-        verify: false,
-        notify: false,
-        appId: 'NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz',
-        appKey: 'sP953PkRs8uUidATLvUGUFPw',
-        placeholder: 'Just go go',
-        avatar:'mm',
-        meta:guest,
-        pageSize:'10' || 10,
-        visitor: true
+      el: '#comments' ,
+      verify: false,
+      notify: false,
+      appId: 'NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz',
+      appKey: 'sP953PkRs8uUidATLvUGUFPw',
+      placeholder: 'Just go go',
+      avatar: 'mm',
+      meta:guest,
+      pageSize: '10' || 10,
+      visitor: false
     });
   </script>
 
@@ -1363,7 +1370,7 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
                 
                 var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
                 var indexOfTitle = [];
                 var indexOfContent = [];
                 // only match articles with not empty titles
@@ -1604,6 +1611,73 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
   
 
   
+  <script>
+    
+    function showTime(Counter) {
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url: { "$in": entries } }) })
+        .done(function ({ results }) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log("LeanCloud Counter Error: " + responseJSON.code + " " + responseJSON.error);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz",
+                'X-LC-Key': "sP953PkRs8uUidATLvUGUFPw",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          if ($('.post-title-link').length >= 1) {
+            showTime(Counter);
+          }
+          
+        })
+    });
+  </script>
+
+
 
   
 
@@ -1612,6 +1686,9 @@ Welcome to Hexo! This is your very first post. Check documentation for more info
   
 
   
+
+  
+
   
 
   
