@@ -42,6 +42,31 @@
   </entry>
   
   <entry>
+    <title>布隆过滤器</title>
+    <link href="http://yeonsea.club/2019/03/12/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
+    <id>http://yeonsea.club/2019/03/12/布隆过滤器/</id>
+    <published>2019-03-12T01:17:12.000Z</published>
+    <updated>2019-08-20T10:11:51.564Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h1><h2 id="什么是布隆过滤器"><a href="#什么是布隆过滤器" class="headerlink" title="什么是布隆过滤器"></a>什么是布隆过滤器</h2><p>布隆过滤器是一种基于概率进行验重的数据结构。它的基本原理是：小概率事件不容易同时发生。</p><p>布隆过滤器使用多个哈希函数把同一个字符串转换成多个不同的哈希值，并记录这些哈希值的特征。下次再面对一个字符串时，布隆过滤器再次使用这些哈希函数把这个字符串转换为多个哈希值。如果这个哈希值全部符合原先那个字符串对应的各个哈希值的特征，则认为这两个字符串是相同的。</p><h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>哈希算法不是一种加密算法，而是一种不可逆的摘要算法。<br>不同的哈希函数可实现不同的哈希算法。<br>使用同一个哈希算法，能够把同一个字符串转成同一个哈希值。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">code = <span class="string">'hello'</span></span><br><span class="line">result = hashlib.sha256(code.encode()).hexdigest()</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure><p>结果是一个十六进制的_数_</p><h2 id="布隆过滤器的原理"><a href="#布隆过滤器的原理" class="headerlink" title="布隆过滤器的原理"></a>布隆过滤器的原理</h2><ol><li>假设K个哈希函数，对同一个字符串计算哈希值，得到K个完全不同的哈希值。</li><li>让这K个哈希值同时除以一个数M，就可以得到K个余数。</li><li>对于一个新的字符串，重复这个过程，如果新字符串获得的K个余数与原来的字符串对应的K个余数完全相同，那么就可以说，这两个字符串”很有可能”是同一个字符串。</li></ol><p>$$<br>1-(1-e^{\frac{-KN}{M}})^{K}<br>$$</p><h2 id="如何压缩数据容量"><a href="#如何压缩数据容量" class="headerlink" title="如何压缩数据容量"></a>如何压缩数据容量</h2><p>采用二进制保存数字</p><h2 id="布隆过滤器与Redis结合"><a href="#布隆过滤器与Redis结合" class="headerlink" title="布隆过滤器与Redis结合"></a>布隆过滤器与Redis结合</h2><p>使用Redis字符串的位操作，记录K个余数的位置即可。</p><h2 id="布隆过滤器的弊端"><a href="#布隆过滤器的弊端" class="headerlink" title="布隆过滤器的弊端"></a>布隆过滤器的弊端</h2><p>布隆过滤器只能单向验证重复。<br>随着Redis字符串对应的二进制位越来越多的为被设置为1，布隆过滤器误报的概率越来越大，因为可能其它多个字符串对应的二进制位中越来越多的位被设置为1，其中K个值刚好和一个新来的字符串的K个余数重合。<br>提前规划好数据规模与容忍的误报率。  </p><blockquote><p>最多需要对 n 个字符串进行验证重复操作，能够容忍的最大误报率为 p，那么，布隆过滤器将会使用到的二进制位的数量为：</p></blockquote><p>$$<br>m = -\frac{n\ln{p}}{\ln{2}^{2}}<br>$$</p><blockquote><p>哈希函数的个数为：</p></blockquote><p>$$<br>k = \frac{m}{n}\ln{2}<br>$$</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
+      
+    
+    </summary>
+    
+      <category term="Web" scheme="http://yeonsea.club/categories/Web/"/>
+    
+    
+      <category term="Web" scheme="http://yeonsea.club/tags/Web/"/>
+    
+  </entry>
+  
+  <entry>
     <title>用 Spring Boot 编写 RESTful API</title>
     <link href="http://yeonsea.club/2018/12/23/%E7%94%A8SpringBoot%E7%BC%96%E5%86%99RESTfulAPI/"/>
     <id>http://yeonsea.club/2018/12/23/用SpringBoot编写RESTfulAPI/</id>
