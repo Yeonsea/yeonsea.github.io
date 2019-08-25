@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[关于分布式系统的稳定性]]></title>
+    <url>%2F2019%2F08%2F25%2F%E5%85%B3%E4%BA%8E%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7%2F</url>
+    <content type="text"><![CDATA[系统稳定性日志分析信息 堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息 通过异常堆栈，可以定位到谁宕机了 产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数进行优化，减少 GC 次数与 stop the world 时间，优化应用响应时间 集群监控木通原理 监控指标 load：linux 中，可以通过 top,uptime来查看系统load值，系统load定义为特定时间间隔内运行队列中的平均线程数。 cpu 利用率 磁盘剩余空间 网络 traffic 磁盘 IO 内存使用 qps query per second rt response time select/ps update/ps、delete/ps GC JVM 虚拟机开发团队一直致力于消除或者减少工作线程因内存回收而导致的停顿，用户线程的停顿时间在不断地缩短，但是仍然没办法完全消除 心跳检测 对于自治的分布式系统而言，一般都有一整套的集群心跳检测机制，能够实时地移除掉宕机的 Slave，避免路由规则将任务分配给已宕机的机器来处理。而如果是 Master 宕机，集群能够自动地进行 Master 的选举，从而避免由 Master 宕机而导致整个集群不能提供服务的情况发生，这一类系统，如 ZooKeeper，便是一个很好的典范。也有一部分系统可以通过外部干预，使备份机器 stand by，或者是双机互为备份，以实现故障切换，如 MySQL、Nginx等，以避免单点故障的发生。 ping 应用层检测 curl 定时访问应用中预留的自检 url 业务检测 可在 response 的 header 中约定一个值，来标识返回的结果是否正常 容量评估及应用水位当前水位 = 当前总 qps / （单台机器极限 x 机器数）x 100% 流量控制流量控制实施多个维度 对系统的总并发请求数进行限制 - 可以很好地控制系统的负载，避免出现流量突增将系统压垮的情况 限制单位时间内的请求次数（如限制qps） - 限制调用频次，防止某个外部调用的流量突增影响到服务本身的稳定性 通过白名单机制来限制每一个接入系统调用的频率等 超载的部分流量 直接返回，现实系统繁忙 通过单机内存队列来进行有限的等待 通过分布式消息队列来将用户的请求异步化 服务稳定性依赖管理服务消费日志 优雅降级 对于调用超时的非核心服务，可以设定一个阈值，如果调用超时的次数超过这个阈值，便自动将该服务降级。此时服务调用者跳过对该服务的调用，并指定一个休眠的时间点，当时间点过了以后，再次对该服务进行重试，如果服务恢复，则取消降级，否则继续保持该服务的降级状态，直到所依赖的服务故障恢复。 服务分级开关 当系统负载较高，即将突破警戒水位时，如何通过实时地屏蔽一些非核心链路的调用来降低系统的负载呢？这时需要系统预先定义一些开关控制程序的服务提供策略。开关通过修改一些预先定义好的全局变量，来控制系统的关键路径和逻辑。 应急预案高并发系统设计 高并发系统与普通系统设计的区别在于，既要保障系统的可用性和可扩展性，又要兼顾数据的一致性，还要处理多线程同步的问题。任何细微问题，都有可能在高并发环境下被无限地放大，直至系统宕机 操作原子性 原子操作指的是不可分割的操作，它要么执行成功，要么执行失败，不会产生中间状态。原子操作也是一些常见的多线程程序bug的源头。并发相关的问题对于测试来说，并不是每次都能重现，因此处理起来十分棘手。]]></content>
+      <tags>
+        <tag>调优</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Writing & Publishing your First NPM Package]]></title>
     <url>%2F2019%2F08%2F23%2FWriting%26Publishing_your_First_NPM_Package%2F</url>
     <content type="text"><![CDATA[Just do itNPM account Create an NPM account if you don’t yet have onenpm js. Open terminal and … 1npm adduser ** If you use taobao mirror, it will show 403 Forbidden. Then …123npm config get registry # show the current login sourcenpm config set registry=http://registry.npmjs.org # change to the npmjsnpm login # relogin Create a component1module.exports.*** = *** Create a new repository on GitHubInit and publishUnder the component, open the terminal init1234567code .git initgit add .git commit -m &quot;first commit&quot;git remote add origin https://github.com/***/***.gitgit push -u origin mastersudo git push -u origin master publish1npm publish Use it!create a new projectimport12npm i ** --saveparser index.html]]></content>
