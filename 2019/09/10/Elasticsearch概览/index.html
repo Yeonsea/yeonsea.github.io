@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_package_v0.16/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_package_v0.16/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_package_v0.16/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/favicon_package_v0.16/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="入门全文搜索引擎基于 Lucene 构建的开源、分布式、RESTful接口 ^1  Github 的搜索是基于 Elasticsearch 构建的，只索引项目主分支，但包括20亿个索引文档，30TB的索引文件  Shay Banon  失业开发者  给妻子构建食谱搜索引擎  早期版本的 Lucene  为方便Java可以在应用中增加搜索功能  第一个开源项目“Compass” 重写 Compass">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch概览">
+<meta property="og:url" content="http://yeonsea.club/2019/09/10/Elasticsearch概览/index.html">
+<meta property="og:site_name" content="Đinh Giang">
+<meta property="og:description" content="入门全文搜索引擎基于 Lucene 构建的开源、分布式、RESTful接口 ^1  Github 的搜索是基于 Elasticsearch 构建的，只索引项目主分支，但包括20亿个索引文档，30TB的索引文件  Shay Banon  失业开发者  给妻子构建食谱搜索引擎  早期版本的 Lucene  为方便Java可以在应用中增加搜索功能  第一个开源项目“Compass” 重写 Compass">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-10T08:13:02.399Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch概览">
+<meta name="twitter:description" content="入门全文搜索引擎基于 Lucene 构建的开源、分布式、RESTful接口 ^1  Github 的搜索是基于 Elasticsearch 构建的，只索引项目主分支，但包括20亿个索引文档，30TB的索引文件  Shay Banon  失业开发者  给妻子构建食谱搜索引擎  早期版本的 Lucene  为方便Java可以在应用中增加搜索功能  第一个开源项目“Compass” 重写 Compass">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Đinh Giang" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yeonsea.club/2019/09/10/Elasticsearch概览/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Elasticsearch概览 | Đinh Giang</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+  
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/Yeonsea" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Đinh Giang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">人生は意味が、唯一の生活をすることができますが见つかりました楽しいこと、 のような花が见つかる、あなた様と私が见つかりました</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/猫になりたい" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yeonsea.club/2019/09/10/Elasticsearch概览/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="J">
+      <meta itemprop="description" content="Was mich nicht umbringt, macht mich stärker.">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Đinh Giang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Elasticsearch概览
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-10 16:11:35 / 修改时间：16:13:02" itemprop="dateCreated datePublished" datetime="2019-09-10T16:11:35+08:00">2019-09-10</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/10/Elasticsearch概览/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/09/10/Elasticsearch概览/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/09/10/Elasticsearch概览/" class="leancloud_visitors" data-flag-title="Elasticsearch概览">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+        
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><p>全文搜索引擎<br>基于 Lucene 构建的开源、分布式、RESTful接口</p>
+<p><a href="还是一个分布式文档数据库">^1</a></p>
+<blockquote>
+<p>Github 的搜索是基于 Elasticsearch 构建的，只索引项目主分支，但包括20亿个索引文档，30TB的索引文件</p>
+</blockquote>
+<p>Shay Banon  失业开发者  给妻子构建食谱搜索引擎  早期版本的 Lucene  为方便Java可以在应用中增加搜索功能  第一个开源项目“Compass”</p>
+<p>重写 Compass 使其成为一个独立的项目，Elasticsearch  </p>
+<ul>
+<li>横向可扩展</li>
+<li>分片机制提供更好的分布性：sharding，类似 HDFS 的块机制</li>
+<li>高可用：replica</li>
+<li>使用简单</li>
+</ul>
+<p>Lucene：最初由 Doug Cutting 开发</p>
+<p><em>倒排索引</em></p>
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p>术语概念</p>
+<ul>
+<li>索引词：term</li>
+<li>文本：text</li>
+<li>分析：Analysis</li>
+<li>集群：Cluster</li>
+<li>节点：node</li>
+<li>路由：routing</li>
+<li>分片：shard</li>
+<li>主分片：primary shard</li>
+<li>副本分片：replica shard</li>
+<li>副本：replica</li>
+<li>索引：index 索引是具有相同结构的文档集合</li>
+<li>类型：type 类型是索引的逻辑分区</li>
+<li>文档：document  存储的一个 JSON 格式的字符串</li>
+<li>映射：mapping</li>
+<li>字段：field</li>
+<li>开源字段：source field</li>
+<li>主键：ID</li>
+</ul>
+<blockquote>
+<p>每个 Elasticsearch 分片是一个 Lucene 的索引，有文档存储数量限制</p>
+</blockquote>
+<p>JSON  轻量级数据交换格式</p>
+<h3 id="对外接口"><a href="#对外接口" class="headerlink" title="对外接口"></a>对外接口</h3><p>curl<br>REST：REpresentational State Transfer  表述性状态传输    一种约定    简化沟通成本</p>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><p>索引管理</p>
+<ul>
+<li>创建</li>
+<li>删除</li>
+<li>获取</li>
+<li>打开 关闭</li>
+</ul>
+<p>索引映射管理</p>
+<ul>
+<li>增加映射</li>
+<li>获取索引</li>
+</ul>
+<p>索引别名</p>
+<ul>
+<li>过滤索引别名</li>
+<li>删除别名</li>
+<li>查询现有的别名</li>
+</ul>
+<p>索引配置</p>
+<ul>
+<li>更新索引配置</li>
+<li>获取配置</li>
+<li>索引分析</li>
+</ul>
+<p>索引模板</p>
+<blockquote>
+<p>索引模板就是创建好一个索引参数设置 settings 和 映射 mapping 的模板，在创建新索引的时候指定模板名称就可以使用模板定义好的参数设置和映射</p>
+<ul>
+<li>创建</li>
+<li>删除</li>
+<li>获取</li>
+</ul>
+</blockquote>
+<p>复制配置</p>
+<p>重建索引</p>
+<h3 id="索引监控"><a href="#索引监控" class="headerlink" title="索引监控"></a>索引监控</h3><ul>
+<li>索引统计</li>
+<li>索引分片</li>
+<li>索引恢复</li>
+<li>索引分片存储</li>
+</ul>
+<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3><ul>
+<li>清除缓存</li>
+<li>索引刷新</li>
+<li>冲洗</li>
+<li>合并索引</li>
+</ul>
+<h3 id="文档管理"><a href="#文档管理" class="headerlink" title="文档管理"></a>文档管理</h3><ul>
+<li>增加文档</li>
+<li>更新删除</li>
+<li>查询</li>
+<li>多文档操作</li>
+<li>索引词频率</li>
+<li>查询更新接口</li>
+</ul>
+<h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><p>映射是定义存储和索引文档以及字段的过程</p>
+<ul>
+<li>字段数据类型</li>
+<li>元字段</li>
+<li>映射参数</li>
+<li>动态映射：在 Elasticsearch 中可以不事先建好索引结构，在使用的时候可以直接插入文档到索引。</li>
+</ul>
+<h2 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h2><h3 id="深入搜索"><a href="#深入搜索" class="headerlink" title="深入搜索"></a>深入搜索</h3><h4 id="搜索方式"><a href="#搜索方式" class="headerlink" title="搜索方式"></a>搜索方式</h4><ul>
+<li>URL 搜索 GET方式</li>
+<li>POST 请求参数搜索</li>
+<li>排序 sort</li>
+<li>数据列过滤</li>
+<li>脚本支持<h4 id="重新评分"><a href="#重新评分" class="headerlink" title="重新评分"></a>重新评分</h4>对短语进行重新评分，然后再查询<h4 id="滚动查询请求"><a href="#滚动查询请求" class="headerlink" title="滚动查询请求"></a>滚动查询请求</h4>Elasticsearch 提供了滚动 API 来解决此问题，这有点像数据库中的游标<h4 id="隐藏内容查询"><a href="#隐藏内容查询" class="headerlink" title="隐藏内容查询"></a>隐藏内容查询</h4>inner hits    嵌套结构<h4 id="相关搜索函数"><a href="#相关搜索函数" class="headerlink" title="相关搜索函数"></a>相关搜索函数</h4></li>
+<li>Preference  搜索分片副本执行偏好设置</li>
+<li>索引加权  index_boost</li>
+<li>最小分值  min_score</li>
+<li>分值解释  explain  可以使每个命中的查询解释它的得分是如何计算出来的</li>
+<li>分片情况查询  _search_shards</li>
+<li>总分查询  _count</li>
+<li>是否存在查询</li>
+<li>验证接口<h4 id="搜索模板"><a href="#搜索模板" class="headerlink" title="搜索模板"></a>搜索模板</h4><h3 id="查询DSL"><a href="#查询DSL" class="headerlink" title="查询DSL"></a>查询DSL</h3>Domain-specific Language<br>Elasticsearch 提供了基于 JSON 的完整查询 DSL 来定义查询<h4 id="全文搜索"><a href="#全文搜索" class="headerlink" title="全文搜索"></a>全文搜索</h4></li>
+<li>布尔查询</li>
+<li>短语查询</li>
+<li>短语前缀查询</li>
+<li>多字段查询</li>
+<li>Lucene 语法查询</li>
+<li>简化查询<h4 id="字段查询"><a href="#字段查询" class="headerlink" title="字段查询"></a>字段查询</h4></li>
+<li>单字段查询</li>
+<li>多字段查询</li>
+<li>范围查询<h4 id="复合查询"><a href="#复合查询" class="headerlink" title="复合查询"></a>复合查询</h4></li>
+<li>常数得分查询</li>
+<li>布尔查询</li>
+<li>最大值获取查询</li>
+<li>boosting 查询</li>
+<li>指定索引查询</li>
+<li>过滤查询</li>
+<li>限制查询<h4 id="连接查询"><a href="#连接查询" class="headerlink" title="- 连接查询"></a>- 连接查询</h4></li>
+<li>嵌套查询</li>
+<li>父子文档查询<h4 id="地理查询"><a href="#地理查询" class="headerlink" title="地理查询"></a>地理查询</h4>Elasticsearch 支持两种地理数据类型的字段：地理点类型，支持经度纬度对；地理形状类型，支持点、线、圈、多边形、多边形集合等。</li>
+<li>地理形状查询</li>
+<li>地理范围查询</li>
+<li>地理距离查询</li>
+<li>地理距离范围查询</li>
+<li>多边形地理查询</li>
+<li>地理散列单元查询<h4 id="跨度查询"><a href="#跨度查询" class="headerlink" title="跨度查询"></a>跨度查询</h4></li>
+<li>索引词跨度查询</li>
+<li>多索引词跨度查询</li>
+<li>首跨度查询</li>
+<li>接近跨度查询</li>
+<li>或跨度查询</li>
+<li>非跨度查询</li>
+<li>包含跨度查询</li>
+<li>内部跨度查询<h4 id="高亮显示"><a href="#高亮显示" class="headerlink" title="高亮显示"></a>高亮显示</h4>Elasticsearch 中的高亮显示是来源于 Lucene 的功能，允许一个或者多个字段上突出显示搜索内容<h3 id="简化查询"><a href="#简化查询" class="headerlink" title="简化查询"></a>简化查询</h3>catAPI<br>常用简化查询指标</li>
+<li>indices</li>
+<li>nodes</li>
+<li>recovery</li>
+<li>thread pool</li>
+</ul>
+<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><h3 id="聚合分类"><a href="#聚合分类" class="headerlink" title="聚合分类"></a>聚合分类</h3><h4 id="度量聚合"><a href="#度量聚合" class="headerlink" title="度量聚合"></a>度量聚合</h4><ul>
+<li>平均值聚合</li>
+<li>基数聚合</li>
+<li>最大值聚合</li>
+<li>最小值聚合</li>
+<li>和聚合</li>
+<li>值基数聚合</li>
+<li>统计聚合</li>
+<li>百分比聚合</li>
+<li>百分比分级聚合</li>
+<li>最高命中排行聚合</li>
+<li>脚本度量聚合</li>
+<li>地理边界聚合</li>
+<li>地理重心聚合</li>
+</ul>
+<h3 id="分组聚合"><a href="#分组聚合" class="headerlink" title="分组聚合"></a>分组聚合</h3><ul>
+<li>子聚合</li>
+<li>直方图聚合</li>
+<li>日期直方图聚合</li>
+<li>时间范围聚合</li>
+<li>范围聚合</li>
+<li>过滤聚合</li>
+<li>多重过滤聚合</li>
+<li>空值聚合</li>
+<li>嵌套聚合</li>
+<li>采样聚合</li>
+<li>重要索引词聚合</li>
+<li>索引词聚合</li>
+<li>总体聚合</li>
+<li>地理点距离聚合</li>
+<li>地理散列网格聚合</li>
+<li>IPv4 范围聚合<h3 id="管道聚合"><a href="#管道聚合" class="headerlink" title="管道聚合"></a>管道聚合</h3></li>
+<li>平均分组聚合</li>
+<li>移动平均聚合</li>
+<li>总和分组聚合</li>
+<li>总和累计聚合</li>
+<li>最大分组聚合</li>
+<li>最小分组聚合</li>
+<li>统计分组聚合</li>
+<li>百分位分组聚合</li>
+<li>差值聚合</li>
+<li>分组脚本聚合</li>
+<li>串行差分聚合</li>
+<li>分组选择器聚合</li>
+</ul>
+<h2 id="集群管理"><a href="#集群管理" class="headerlink" title="集群管理"></a>集群管理</h2><h3 id="集群节点监控"><a href="#集群节点监控" class="headerlink" title="集群节点监控"></a>集群节点监控</h3><blockquote>
+<p>对 Elasticsearch 监控的API 主要有三类：一类是集群相关的，以_cluster开头，第二类是监控节点相关的，以_nodes开头，第三类是任务相关的，以_tasks开头</p>
+<ul>
+<li>集群健康值</li>
+<li>集群状态</li>
+<li>集群统计</li>
+<li>集群任务管理</li>
+<li>待定集群任务</li>
+<li>节点信息</li>
+<li>节点统计</li>
+</ul>
+</blockquote>
+<h3 id="集群分片迁移"><a href="#集群分片迁移" class="headerlink" title="集群分片迁移"></a>集群分片迁移</h3><ul>
+<li>移动  remove</li>
+<li>取消  cancel</li>
+<li>分配  allocate</li>
+<li>集群配置更新<h3 id="集群节点配置"><a href="#集群节点配置" class="headerlink" title="集群节点配置"></a>集群节点配置</h3></li>
+<li>主节点  主要职责是和集群操作相关的内容，如创建或删除索引，跟踪哪些节点是集群的一部分，并决定哪些分片分配给相关的节点。</li>
+<li>数据节点  主要是存储索引数据的节点，主要对文档进行增删改查、聚合操作等。</li>
+<li>客户端节点  当主节点和数据节点配置都设置为 false 时，该节点只能处理路由请求，处理搜索，分发索引操作等，从本质上来说该客户端节点表现为智能负载平衡器。独立的客户端节点在一个比较大的集群中是非常有用的，它协调主节点和数据节点，客户端节点加入集群可以得到集群的状态，根据集群的状态可以直接发送路由请求。</li>
+<li>部落节点  部落节点可以跨越多个集群，它可以接收每个集群的状态，然后合并成一个全局集群的状态，它可以读写所有节点上的数据。<h3 id="节点发现"><a href="#节点发现" class="headerlink" title="节点发现"></a>节点发现</h3></li>
+<li>ping 模块</li>
+<li>单播模块<h4 id="主节点选举"><a href="#主节点选举" class="headerlink" title="主节点选举"></a>主节点选举</h4>在集群中，系统会自动通过 ping 来进行选举节点或者加入主节点，这些都是自动完成的。<h4 id="故障检测"><a href="#故障检测" class="headerlink" title="故障检测"></a>故障检测</h4><h4 id="集群平衡配置"><a href="#集群平衡配置" class="headerlink" title="集群平衡配置"></a>集群平衡配置</h4></li>
+<li>分片分配设置</li>
+<li>基于磁盘的配置</li>
+<li>分片智能分配</li>
+<li>分片配置过滤</li>
+<li>其他集群配置<h2 id="索引分词器"><a href="#索引分词器" class="headerlink" title="索引分词器"></a>索引分词器</h2><h3 id="分词器的概念"><a href="#分词器的概念" class="headerlink" title="分词器的概念"></a>分词器的概念</h3><em>分词器analyzer的作用是当一个文档被索引的时候，分词器从文档中提取出若干词元token来支持索引的存储和搜索。</em><blockquote>
+<p>分词器 是由一个分解器 tokenizer、零个或多个词元过滤器 token filters 组成。</p>
+</blockquote>
+<h3 id="中文分词器"><a href="#中文分词器" class="headerlink" title="中文分词器"></a>中文分词器</h3></li>
+<li>smartcn</li>
+<li>IKAnanlyzer<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3></li>
+<li>java 插件  jar</li>
+<li>站点插件  js html css</li>
+<li>混合插件<h4 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h4>正常情况下插件位于$ES_HOME/bin 下<br>通过rpm等安装的位置可能会不同<h4 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h4></li>
+<li>查询插件</li>
+<li>删除插件</li>
+<li>Silent/Verbose 参数  更多调试信息</li>
+<li>自定义配置目录</li>
+<li>超时设置</li>
+<li>代理设置</li>
+<li>自定义插件目录</li>
+<li>强制插件</li>
+</ul>
+<h4 id="插件清单"><a href="#插件清单" class="headerlink" title="插件清单"></a>插件清单</h4><ul>
+<li>API 插件</li>
+<li>报警插件</li>
+<li>分词插件</li>
+<li>发现插件</li>
+<li>管理和站点插件</li>
+</ul>
+<h2 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h2><blockquote>
+<p>在Elasticsearch 的配置中，主要有两种配置方式，一种是静态配置，另一种是动态配置。静态配置的参数只能在配置文件中事先写好，动态配置的参数可以通过_cluster/settings进行设置。</p>
+</blockquote>
+<h3 id="网络相关配置"><a href="#网络相关配置" class="headerlink" title="网络相关配置"></a>网络相关配置</h3><ul>
+<li>本地网关配置</li>
+<li>HTTP 配置</li>
+<li>网络配置  常用网络配置，高级网络配置，高级TCP配置，传输和HTTP协议</li>
+<li>传输配置  TCP传输，本地传输，传输追踪<h3 id="脚本配置"><a href="#脚本配置" class="headerlink" title="脚本配置"></a>脚本配置</h3></li>
+<li>脚本使用</li>
+<li>脚本配置  索引脚本，启用动态脚本，脚本自动重载，本地java脚本，lucene表达式脚本，得分，文档字段，保存的字段，在脚本中访问文档的得分，源字段，Groovy内置方法<h3 id="快照和恢复配置"><a href="#快照和恢复配置" class="headerlink" title="快照和恢复配置"></a>快照和恢复配置</h3></li>
+<li>只读仓库</li>
+<li>快照</li>
+<li>恢复</li>
+<li>快照状态<h3 id="线程池配置"><a href="#线程池配置" class="headerlink" title="线程池配置"></a>线程池配置</h3><h4 id="线程池类型"><a href="#线程池类型" class="headerlink" title="线程池类型"></a>线程池类型</h4></li>
+<li>cached 线程池是一个无限的线程池，如果存在挂起的请求时，就会产生一个线程。这个线程池用来防止提交的请求被阻塞或丢弃。</li>
+<li>fixed 线程池拥有固定大小的线程来操作队列中的请求（任意界限）直到请求没有线程提供服务。size参数控制线程的数量，queue_size 参数可以控制没有线程执行的请求队列的大小。默认设置为-1，意味着无限大。当请求到达而且队列已经满了，请求会被终止。</li>
+<li>scaling 线程池拥有动态数量的线程。线程的数量与工作量成正比，并且在1和size参数值之间变化。keep_alive参数决定一个线程的空闲时间。</li>
+</ul>
+<h4 id="处理器设置"><a href="#处理器设置" class="headerlink" title="处理器设置"></a>处理器设置</h4><p>处理器的数量是自动检测的，线程池的设置会基于结果自动设置。有时，处理器的数量会被错误检测，在这种情况下，处理器的数量可以使用 processes进行明确设置。</p>
+<h3 id="索引配置"><a href="#索引配置" class="headerlink" title="索引配置"></a>索引配置</h3><blockquote>
+<p>索引模块是控制每个索引指标的模块。索引模块包括分词、分片控制和分配、字段映射、索引相似性配置、慢查询记录、文件系统配置、控制事务和刷新模块。</p>
+</blockquote>
+<h4 id="缓存配置"><a href="#缓存配置" class="headerlink" title="缓存配置"></a>缓存配置</h4><ul>
+<li>总内存控制</li>
+<li>列数据内存控制</li>
+<li>请求内存控制</li>
+<li>数据缓存</li>
+<li>节点查询缓存</li>
+<li>索引缓冲区</li>
+<li>分片请求缓存</li>
+<li>索引恢复</li>
+<li>TTL区间<h4 id="索引分片分配"><a href="#索引分片分配" class="headerlink" title="索引分片分配"></a>索引分片分配</h4></li>
+<li>碎片分配过滤</li>
+<li>延迟分配</li>
+<li>每个节点的总碎片<h4 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h4><blockquote>
+<p>一个 Elasticsearch 分片就是一个 Lucene 索引，Lucene索引被分解为分片。分片是索引的内部存储单元，存储索引数据并且是不变的。周期性合并(merge)小的分片为更大的分片来保持索引大小在范围内。</p>
+</blockquote>
+<h4 id="相似模块"><a href="#相似模块" class="headerlink" title="相似模块"></a>相似模块</h4></li>
+<li>配置相似性</li>
+<li>可用的相似性模块<h4 id="响应慢日志监控"><a href="#响应慢日志监控" class="headerlink" title="响应慢日志监控"></a>响应慢日志监控</h4></li>
+<li>搜索慢日志</li>
+<li>索引慢日志<h4 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h4>支持存储类型</li>
+<li>simplefs  简单文件系统类型</li>
+<li>niofs  NIO 文件系统类型</li>
+<li>mmapfs  MMap 文件系统类型在文件系统上通过映射文件到内存(mmap)存储分片索引</li>
+<li>default_fs  默认类型是 NIO FS 和 MMapFS 的混合，对每个类型的文件选择最佳文件系统<h4 id="事务日志"><a href="#事务日志" class="headerlink" title="事务日志"></a>事务日志</h4></li>
+<li>冲洗设置</li>
+<li>事务日志设置</li>
+</ul>
+<h2 id="告警、监控和权限管理"><a href="#告警、监控和权限管理" class="headerlink" title="告警、监控和权限管理"></a>告警、监控和权限管理</h2><h3 id="告警"><a href="#告警" class="headerlink" title="告警"></a>告警</h3><p>Watcher 是进行警告和通知的插件，可以根据数据的变化采取行动。它的设计原理是在 Elasticsearch 中执行查询，满足条件的情况下，产生告警。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><ul>
+<li>Trigger</li>
+<li>Inputs</li>
+<li>Condition</li>
+<li>Transform</li>
+<li>Action<h4 id="告警输出配置"><a href="#告警输出配置" class="headerlink" title="告警输出配置"></a>告警输出配置</h4>告警输出可以为邮件、Webhook、Logging、HipChat、Slack、PagerDuty<h4 id="告警管理"><a href="#告警管理" class="headerlink" title="告警管理"></a>告警管理</h4></li>
+<li>列出警告</li>
+<li>删除警告<h3 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h3><blockquote>
+<p>Marvel 是商业监控方案，用来监控 Elasticsearch 集群历史状态的有力工具，便于性能优化以及故障诊断。监控主要分为六个层面，分别是集群层、节点层、索引层、分片层、事件层、Sense。</p>
+</blockquote>
+<h4 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h4><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4></li>
+<li>监控参数配置</li>
+<li>监控索引配置</li>
+<li>Kibana 配置相关</li>
+<li>Tribe 部落节点监控配置<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><blockquote>
+<p>Shield 是商业权限管理插件，它可以保护 Elasticsearch 中的数据，采用加密的通信密码，基于角色的访问控制，IP过滤和审计等。</p>
+</blockquote>
+<h4 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h4>Shield 是 Elasticsearch 的一个插件，一旦安装完成，插件将会拦截所有 API 请求，然后对请求进行认证和授权的校验。该插件同时提供 SSL 安全协议来传输网络数据，该插件提供了审计日志记录的能力，用来进行验证和审计。</li>
+<li>用户认证</li>
+<li>授权</li>
+<li>节点认证和信道加密</li>
+<li>IP 过滤</li>
+<li>审计<h4 id="用户认证"><a href="#用户认证" class="headerlink" title="用户认证"></a>用户认证</h4>用户认证方式</li>
+<li>Native  一个内置的本地认证系统，默认可用</li>
+<li>File  一种内置的基于文件的认证系统，默认可用</li>
+<li>LDAP  通过外部轻量级目录协议进行身份验证</li>
+<li>AD  通过外部活动目录服务的身份验证</li>
+<li>PKI  通过使用可信的X.509证书的认证<br>匿名用户访问<h4 id="角色管理"><a href="#角色管理" class="headerlink" title="角色管理"></a>角色管理</h4></li>
+<li>增加角色</li>
+<li>查看角色</li>
+<li>删除角色</li>
+</ul>
+<h2 id="ELK-应用"><a href="#ELK-应用" class="headerlink" title="ELK 应用"></a>ELK 应用</h2><ul>
+<li>Logstash  是一个灵活的开放源码的数据收集、处理、传输的工具。Logstash 可以处理日志、事件、非结构化的数据，并把它们输出出来，包括可以输出到 Elasticsearch 中。</li>
+<li>Kibana  是一个开源的数据可视化平台，可以把数据以强大的图形化方式展示出来。从柱状图到地图等，它可以通过多个图表的组合来生成更为强大的仪表面板，帮助人们理解、分析和分享数据。</li>
+</ul>
+<h2 id="Logstash"><a href="#Logstash" class="headerlink" title="Logstash"></a>Logstash</h2><h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><h4 id="配置文件的结构"><a href="#配置文件的结构" class="headerlink" title="配置文件的结构"></a>配置文件的结构</h4><p>配置文件由输入，过滤，输出三部分组成，每部分都是由插件构成的，这些插件负责处理日志的不同过程</p>
+<h4 id="事件相关配置"><a href="#事件相关配置" class="headerlink" title="事件相关配置"></a>事件相关配置</h4><blockquote>
+<p>每个事件都有不同的属性，比如 apache 的访问日志，可以包括状态码、协议、路径、客户端 IP等，在 Logstash 中这些属性叫做 fields。由于它们是事件属性，所以这些配置选项只会在过滤器和输出块中工作。</p>
+</blockquote>
+<h4 id="插件管理-1"><a href="#插件管理-1" class="headerlink" title="插件管理"></a>插件管理</h4><p>插件管理器通过 bin/logstash-plugin 的脚本来管理整个插件的生命周期，通过命令行接口(CLI)调用可以安装、卸载、升级插件。</p>
+<ul>
+<li>输入插件</li>
+<li>过滤插件</li>
+<li>输出插件</li>
+<li>编解码插件<h3 id="Kibana-配置"><a href="#Kibana-配置" class="headerlink" title="Kibana 配置"></a>Kibana 配置</h3>安装比较简单，也是绿色的，解压后直接运行默认端口 5601。<h4 id="Discover"><a href="#Discover" class="headerlink" title="Discover"></a>Discover</h4></li>
+<li>新的搜索</li>
+<li>保存搜索加载保存的搜索</li>
+<li>自动刷新</li>
+<li>查看字段数据统计<h4 id="Visualize"><a href="#Visualize" class="headerlink" title="Visualize"></a>Visualize</h4>视图是定制可视化报表的地方</li>
+</ul>
+<ol>
+<li>选择一个图标类型</li>
+<li>选择一个数据源</li>
+<li>可视化编辑器配置</li>
+<li>保存编辑器<h4 id="Dashboard"><a href="#Dashboard" class="headerlink" title="Dashboard"></a>Dashboard</h4>仪表盘是用一组原始图标根据需要组合成一个丰富的图形报表</li>
+</ol>
+<ul>
+<li>空仪表盘</li>
+<li>创建仪表盘</li>
+<li>保存仪表盘</li>
+<li>加载仪表盘</li>
+<li>共享仪表盘<h4 id="Settings"><a href="#Settings" class="headerlink" title="Settings"></a>Settings</h4></li>
+<li>索引设置</li>
+<li>管理字段</li>
+<li>告警设置</li>
+<li>Kibana 服务器配置</li>
+<li>管理搜索，可视化仪表板<h2 id="Elasticsearch-5-0-的特性与改进"><a href="#Elasticsearch-5-0-的特性与改进" class="headerlink" title="Elasticsearch 5.0 的特性与改进"></a>Elasticsearch 5.0 的特性与改进</h2></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="J 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/25/关于分布式系统的稳定性/" rel="next" title="关于分布式系统的稳定性">
+                <i class="fa fa-chevron-left"></i> 关于分布式系统的稳定性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="J">
+            
+              <p class="site-author-name" itemprop="name">J</p>
+              <p class="site-description motion-element" itemprop="description">Was mich nicht umbringt, macht mich stärker.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">1.</span> <span class="nav-text">入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础知识"><span class="nav-number">1.1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对外接口"><span class="nav-number">1.2.</span> <span class="nav-text">对外接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引"><span class="nav-number">2.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引监控"><span class="nav-number">2.1.</span> <span class="nav-text">索引监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态管理"><span class="nav-number">2.2.</span> <span class="nav-text">状态管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文档管理"><span class="nav-number">2.3.</span> <span class="nav-text">文档管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#映射"><span class="nav-number">3.</span> <span class="nav-text">映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索"><span class="nav-number">4.</span> <span class="nav-text">搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#深入搜索"><span class="nav-number">4.1.</span> <span class="nav-text">深入搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索方式"><span class="nav-number">4.1.1.</span> <span class="nav-text">搜索方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重新评分"><span class="nav-number">4.1.2.</span> <span class="nav-text">重新评分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滚动查询请求"><span class="nav-number">4.1.3.</span> <span class="nav-text">滚动查询请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐藏内容查询"><span class="nav-number">4.1.4.</span> <span class="nav-text">隐藏内容查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关搜索函数"><span class="nav-number">4.1.5.</span> <span class="nav-text">相关搜索函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索模板"><span class="nav-number">4.1.6.</span> <span class="nav-text">搜索模板</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询DSL"><span class="nav-number">4.2.</span> <span class="nav-text">查询DSL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#全文搜索"><span class="nav-number">4.2.1.</span> <span class="nav-text">全文搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字段查询"><span class="nav-number">4.2.2.</span> <span class="nav-text">字段查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合查询"><span class="nav-number">4.2.3.</span> <span class="nav-text">复合查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接查询"><span class="nav-number">4.2.4.</span> <span class="nav-text">- 连接查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#地理查询"><span class="nav-number">4.2.5.</span> <span class="nav-text">地理查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跨度查询"><span class="nav-number">4.2.6.</span> <span class="nav-text">跨度查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高亮显示"><span class="nav-number">4.2.7.</span> <span class="nav-text">高亮显示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简化查询"><span class="nav-number">4.3.</span> <span class="nav-text">简化查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合"><span class="nav-number">5.</span> <span class="nav-text">聚合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合分类"><span class="nav-number">5.1.</span> <span class="nav-text">聚合分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#度量聚合"><span class="nav-number">5.1.1.</span> <span class="nav-text">度量聚合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分组聚合"><span class="nav-number">5.2.</span> <span class="nav-text">分组聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道聚合"><span class="nav-number">5.3.</span> <span class="nav-text">管道聚合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群管理"><span class="nav-number">6.</span> <span class="nav-text">集群管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群节点监控"><span class="nav-number">6.1.</span> <span class="nav-text">集群节点监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群分片迁移"><span class="nav-number">6.2.</span> <span class="nav-text">集群分片迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群节点配置"><span class="nav-number">6.3.</span> <span class="nav-text">集群节点配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点发现"><span class="nav-number">6.4.</span> <span class="nav-text">节点发现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主节点选举"><span class="nav-number">6.4.1.</span> <span class="nav-text">主节点选举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#故障检测"><span class="nav-number">6.4.2.</span> <span class="nav-text">故障检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群平衡配置"><span class="nav-number">6.4.3.</span> <span class="nav-text">集群平衡配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引分词器"><span class="nav-number">7.</span> <span class="nav-text">索引分词器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分词器的概念"><span class="nav-number">7.1.</span> <span class="nav-text">分词器的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文分词器"><span class="nav-number">7.2.</span> <span class="nav-text">中文分词器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">7.3.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插件管理"><span class="nav-number">7.3.1.</span> <span class="nav-text">插件管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件安装"><span class="nav-number">7.3.2.</span> <span class="nav-text">插件安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件清单"><span class="nav-number">7.3.3.</span> <span class="nav-text">插件清单</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级配置"><span class="nav-number">8.</span> <span class="nav-text">高级配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络相关配置"><span class="nav-number">8.1.</span> <span class="nav-text">网络相关配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#脚本配置"><span class="nav-number">8.2.</span> <span class="nav-text">脚本配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照和恢复配置"><span class="nav-number">8.3.</span> <span class="nav-text">快照和恢复配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池配置"><span class="nav-number">8.4.</span> <span class="nav-text">线程池配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池类型"><span class="nav-number">8.4.1.</span> <span class="nav-text">线程池类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理器设置"><span class="nav-number">8.4.2.</span> <span class="nav-text">处理器设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引配置"><span class="nav-number">8.5.</span> <span class="nav-text">索引配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存配置"><span class="nav-number">8.5.1.</span> <span class="nav-text">缓存配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引分片分配"><span class="nav-number">8.5.2.</span> <span class="nav-text">索引分片分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并"><span class="nav-number">8.5.3.</span> <span class="nav-text">合并</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相似模块"><span class="nav-number">8.5.4.</span> <span class="nav-text">相似模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应慢日志监控"><span class="nav-number">8.5.5.</span> <span class="nav-text">响应慢日志监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储"><span class="nav-number">8.5.6.</span> <span class="nav-text">存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务日志"><span class="nav-number">8.5.7.</span> <span class="nav-text">事务日志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#告警、监控和权限管理"><span class="nav-number">9.</span> <span class="nav-text">告警、监控和权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#告警"><span class="nav-number">9.1.</span> <span class="nav-text">告警</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">9.1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构"><span class="nav-number">9.1.2.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#告警输出配置"><span class="nav-number">9.1.3.</span> <span class="nav-text">告警输出配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#告警管理"><span class="nav-number">9.1.4.</span> <span class="nav-text">告警管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控"><span class="nav-number">9.2.</span> <span class="nav-text">监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-1"><span class="nav-number">9.2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">9.2.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限管理"><span class="nav-number">9.3.</span> <span class="nav-text">权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#工作原理"><span class="nav-number">9.3.1.</span> <span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户认证"><span class="nav-number">9.3.2.</span> <span class="nav-text">用户认证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#角色管理"><span class="nav-number">9.3.3.</span> <span class="nav-text">角色管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ELK-应用"><span class="nav-number">10.</span> <span class="nav-text">ELK 应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Logstash"><span class="nav-number">11.</span> <span class="nav-text">Logstash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-1"><span class="nav-number">11.1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件的结构"><span class="nav-number">11.1.1.</span> <span class="nav-text">配置文件的结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件相关配置"><span class="nav-number">11.1.2.</span> <span class="nav-text">事件相关配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件管理-1"><span class="nav-number">11.1.3.</span> <span class="nav-text">插件管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kibana-配置"><span class="nav-number">11.2.</span> <span class="nav-text">Kibana 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Discover"><span class="nav-number">11.2.1.</span> <span class="nav-text">Discover</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Visualize"><span class="nav-number">11.2.2.</span> <span class="nav-text">Visualize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dashboard"><span class="nav-number">11.2.3.</span> <span class="nav-text">Dashboard</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Settings"><span class="nav-number">11.2.4.</span> <span class="nav-text">Settings</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Elasticsearch-5-0-的特性与改进"><span class="nav-number">12.</span> <span class="nav-text">Elasticsearch 5.0 的特性与改进</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">J</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66145475";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <script>
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item) > -1;
+    });
+    new Valine({
+      el: '#comments' ,
+      verify: false,
+      notify: false,
+      appId: 'NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz',
+      appKey: 'sP953PkRs8uUidATLvUGUFPw',
+      placeholder: 'Just go go',
+      avatar: 'mm',
+      meta:guest,
+      pageSize: '10' || 10,
+      visitor: false
+    });
+  </script>
+
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz",
+                'X-LC-Key': "sP953PkRs8uUidATLvUGUFPw",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
