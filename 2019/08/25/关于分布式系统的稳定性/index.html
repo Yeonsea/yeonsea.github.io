@@ -104,18 +104,18 @@
 
 
 
-  <meta name="description" content="日志分析信息  堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息  通过异常堆栈，可以定位到谁宕机了  产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数进">
+  <meta name="description" content="日志分析信息 堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息  应用 通过异常堆栈，可以定位到谁宕机了 产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数">
 <meta name="keywords" content="调优">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于分布式系统的稳定性">
 <meta property="og:url" content="http://yeonsea.club/2019/08/25/关于分布式系统的稳定性/index.html">
 <meta property="og:site_name" content="Đinh Giang">
-<meta property="og:description" content="日志分析信息  堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息  通过异常堆栈，可以定位到谁宕机了  产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数进">
+<meta property="og:description" content="日志分析信息 堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息  应用 通过异常堆栈，可以定位到谁宕机了 产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-30T10:14:38.000Z">
+<meta property="og:updated_time" content="2019-09-10T08:05:36.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于分布式系统的稳定性">
-<meta name="twitter:description" content="日志分析信息  堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息  通过异常堆栈，可以定位到谁宕机了  产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数进">
+<meta name="twitter:description" content="日志分析信息 堆栈信息 访问用户 IP、请求 URL、应用响应时间 内存回收信息 自定义信息  应用 通过异常堆栈，可以定位到谁宕机了 产生问题的程序行，对异常进行修复 访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式 应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器 线程 dump，判断是否死锁及线程阻塞的原因 应用的 GC 日志，对系统代码和 JVM 内存参数">
 
 
 
@@ -465,7 +465,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-30 18:14:38" itemprop="dateModified" datetime="2019-08-30T18:14:38+08:00">2019-08-30</time>
+                <time title="修改时间：2019-09-10 16:05:36" itemprop="dateModified" datetime="2019-09-10T16:05:36+08:00">2019-09-10</time>
               
             
           </span>
@@ -513,7 +513,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">5.8k</span>
+                <span title="本文字数">9.7k</span>
               
 
               
@@ -527,7 +527,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">5 分钟</span>
+                <span title="阅读时长">9 分钟</span>
               
             </div>
           
@@ -548,22 +548,21 @@
       
 
       
-        <h2 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h2><p>信息</p>
-<ul>
+        <h2 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h2><h3 id="信息"><a href="#信息" class="headerlink" title="信息"></a>信息</h3><ul>
 <li>堆栈信息</li>
 <li>访问用户 IP、请求 URL、应用响应时间</li>
 <li>内存回收信息</li>
-<li><p>自定义信息</p>
-</li>
-<li><p>通过异常堆栈，可以定位到谁宕机了</p>
-</li>
+<li>自定义信息</li>
+</ul>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li>通过异常堆栈，可以定位到谁宕机了</li>
 <li>产生问题的程序行，对异常进行修复</li>
 <li>访问 IP 和请求参数，排查是否遭到攻击，以及攻击的形式</li>
 <li>应用的响应时间、垃圾回收以及系统 load 来判断系统负载，是否要增加机器</li>
 <li>线程 dump，判断是否死锁及线程阻塞的原因</li>
 <li>应用的 GC 日志，对系统代码和 JVM 内存参数进行优化，减少 GC 次数与 stop the world 时间，优化应用响应时间</li>
 </ul>
-<h2 id="集群监控"><a href="#集群监控" class="headerlink" title="集群监控"></a>集群监控</h2><p>木通原理</p>
+<h2 id="集群监控"><a href="#集群监控" class="headerlink" title="集群监控"></a>集群监控</h2><p>木桶原理</p>
 <h3 id="监控指标"><a href="#监控指标" class="headerlink" title="监控指标"></a>监控指标</h3><ul>
 <li>load：linux 中，可以通过 top,uptime来查看系统load值，系统load定义为特定时间间隔内运行队列中的平均线程数。</li>
 <li>cpu 利用率</li>
@@ -580,6 +579,7 @@
 <h3 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h3><blockquote>
 <p>对于自治的分布式系统而言，一般都有一整套的集群心跳检测机制，能够实时地移除掉宕机的 Slave，避免路由规则将任务分配给已宕机的机器来处理。<br>而如果是 Master 宕机，集群能够自动地进行 Master 的选举，从而避免由 Master 宕机而导致整个集群不能提供服务的情况发生，这一类系统，如 ZooKeeper，便是一个很好的典范。也有一部分系统可以通过外部干预，使备份机器 stand by，或者是双机互为备份，以实现故障切换，如 MySQL、Nginx等，以避免单点故障的发生。</p>
 </blockquote>
+<p>具体操作：</p>
 <ul>
 <li>ping</li>
 <li>应用层检测    curl 定时访问应用中预留的自检 url</li>
@@ -594,7 +594,7 @@
 </ul>
 <p>超载的部分流量</p>
 <ul>
-<li>直接返回，现实系统繁忙</li>
+<li>直接返回，显示系统繁忙</li>
 <li>通过单机内存队列来进行有限的等待</li>
 <li>通过分布式消息队列来将用户的请求异步化</li>
 </ul>
@@ -613,7 +613,7 @@
 <ul>
 <li>CountDownLatch是做减法，CyclicBarrier是做加法,Semaphor的临界资源可以反复使用</li>
 <li>CountDownLatch不能重置计数，CycliBarrier提供的reset()方法可以重置计数，不过只能等到第一个计数结束。Semaphor可以重复使用。</li>
-<li>CountDownLatch和CycliBarrier不能控制并发线程的数量，Semaphor可以实现控制并发线程的数量。<br>AtomicInteger compareAndSet 方法 调用 Unsafe 对象的 native 方法 compareAndSwapInt 方法，最终通过 Atomic::com::(x, addr, e)来实战原子操作</li>
+<li>CountDownLatch和CycliBarrier不能控制并发线程的数量，Semaphor可以实现控制并发线程的数量。<br>AtomicInteger compareAndSet 方法 调用 Unsafe 对象的 native 方法 compareAndSwapInt 方法，最终通过 Atomic::com::(x, addr, e)来实现原子操作</li>
 </ul>
 </blockquote>
 <p>数据库的事务操作<br>数据库事务具有 ACID 属性<br>导致事务失败的原因有很多：</p>
@@ -654,7 +654,7 @@
 </blockquote>
 <h4 id="前端优化工具-YSlow"><a href="#前端优化工具-YSlow" class="headerlink" title="前端优化工具 YSlow"></a>前端优化工具 YSlow</h4><h4 id="页面响应时间"><a href="#页面响应时间" class="headerlink" title="页面响应时间"></a>页面响应时间</h4><h4 id="方法响应时间"><a href="#方法响应时间" class="headerlink" title="方法响应时间"></a>方法响应时间</h4><p><strong>Java 环境下有一个十分有效的动态跟踪工具，btrace</strong></p>
 <h4 id="GC日志分析"><a href="#GC日志分析" class="headerlink" title="GC日志分析"></a>GC日志分析</h4><blockquote>
-<p>GC 日志能够反应出 Java 应用执行内存回收详细情况，如 Minor GC 的频繁程度、Full GC 的频繁程度、GC 所导致应用停止响应的时间、引起 GC 的原因等。<br>在 JVM 启动时加上几个参数<br>    -verbose:gc -Xloggc:/gc.log -XX:+PrintGCDetails -XX:+PrintGCDataStamps</p>
+<p>GC 日志能够反应出 Java 应用执行内存回收详细情况，如 Minor GC 的频繁程度、Full GC 的频繁程度、GC 所导致应用停止响应的时间、引起 GC 的原因等。<br>在 JVM 启动时加上几个参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-verbose:gc -Xloggc:/gc.log -XX:+PrintGCDetails -XX:+PrintGCDataStamps</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>分别表示日志存放位置，输出 GC 详情，输出 GC 时间戳</p>
 <blockquote>
@@ -664,7 +664,7 @@
 <h4 id="系统资源使用"><a href="#系统资源使用" class="headerlink" title="系统资源使用"></a>系统资源使用</h4><h3 id="性能测试工具"><a href="#性能测试工具" class="headerlink" title="性能测试工具"></a>性能测试工具</h3><p>性能测试指的是通过一些自动化的测试工具模拟多种正常、峰值，以及异常负载对系统的各项性能指标进行测试。</p>
 <h4 id="ab"><a href="#ab" class="headerlink" title="ab"></a>ab</h4><p>全称为 ApacheBench，专门针对 HTTP 服务器进行性能测试的小工具，可以模拟多个并发请求来对服务器进行压力测试，得出服务器在高负载下能够支持的qps及应用的响应时间，为系统设计者提供参考依据。</p>
 <h4 id="Apache-JMeter"><a href="#Apache-JMeter" class="headerlink" title="Apache JMeter"></a>Apache JMeter</h4><p>开源性能测试工具，比 ab 更为强大，采用纯 Java 实现，支持多种协议的性能基准测试，如HTTP,SOAP,FTP,TCP,SMTP,POP3等。<br>提供了图形化界面</p>
-<p>Tomcat 在启动脚本中加入如下配置，便能通过jconsole,VisualVM等工具查看系统相关信息<br>    CATALINA_OPTS=</p>
+<p>Tomcat 在启动脚本中加入如下配置，便能通过jconsole,VisualVM等工具查看系统相关信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CATALINA\_OPTS=&quot;$CATALINA_OPTS -Djava.rmi.server.hostname=***.***.***.*** -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=**** -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false&quot;</span><br></pre></td></tr></table></figure></p>
 <h4 id="HP-LoadRunner"><a href="#HP-LoadRunner" class="headerlink" title="HP LoadRunner"></a>HP LoadRunner</h4><p>商业付费，更成熟，更强大，支持的协议更为广泛，用户体验更高。</p>
 <h4 id="反向代理引流"><a href="#反向代理引流" class="headerlink" title="反向代理引流"></a>反向代理引流</h4><blockquote>
 <p>在分布式环境下，流量真正到达服务器之前，一般会经过负载均衡设备进行转发，通过修改负载均衡的策略，可以改变后端服务器所承受的压力。</p>
@@ -686,15 +686,68 @@
 </li>
 </ol>
 <h4 id="Java-程序优化"><a href="#Java-程序优化" class="headerlink" title="Java 程序优化"></a>Java 程序优化</h4><h5 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h5><p>对于 IO 处理、数据库连接、配置文件解析加载等一些非常耗费系统资源的操作，我们必须对这些实例的创建进行限制，或者始终使用一个公用的实例，以节约系统开销，这种情况下就需要用到单例模式。</p>
-<h5 id="Future-模式"><a href="#Future-模式" class="headerlink" title="Future 模式"></a>Future 模式</h5><p>假设一个任务执行起来需要花费一些时间，为了省去不必要的等待时间，可以先获取一个提货单，即 Future ，然后继续处理别的任务，直到货物到达，即任务执行完得到结果，此时便可以用提货单进行提货，即通过 Future 对象得到返回值。</p>
+<h5 id="Future-模式"><a href="#Future-模式" class="headerlink" title="Future 模式"></a>Future 模式</h5><p>假设一个任务执行起来需要花费一些时间，为了省去不必要的等待时间，可以先获取一个提货单，即 Future ，然后继续处理别的任务，直到货物到达，即任务执行完得到结果，此时便可以用提货单进行提货，即通过 Future 对象得到返回值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class TestFuture &#123;</span><br><span class="line">	static class Job&lt;Object&gt; implements Callable&lt;Object&gt; &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public Object call() throws Exception &#123;</span><br><span class="line">			return loadData();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) throws Exception &#123;</span><br><span class="line">		FutureTask future = new FutureTask(new Job&lt;Object&gt;());</span><br><span class="line">		new Thread(future).start();</span><br><span class="line"></span><br><span class="line">		// do something else</span><br><span class="line"></span><br><span class="line">		Object result = (Object) future.get();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>FutureTask 类实现了 Future 和 Runnable 接口，FutureTask 开始后，loadData()执行时间可能较长，因此可以先处理其他事情，等其他事情处理好以后，再通过 future.get() 来获取结果，如果 loadData() 还未执行完毕，则此线程会阻塞等待。</p>
 </blockquote>
-<h5 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h5><p>使用线程池将互不依赖的几个动作切分，通过多线程对串行工作进行改进，将成倍地提高工作效率。</p>
+<h5 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h5><p>使用线程池将互不依赖的几个动作切分，通过多线程对串行工作进行改进，将成倍地提高工作效率。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class TestExecutorService &#123;</span><br><span class="line">	static class Job implements Runnable &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			doWork();	// 具体工作</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		public void doWork() &#123;</span><br><span class="line">			System.out.println(&quot;doing...&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		ExecutorService exec = Executors.newFixedThreadPool(5);</span><br><span class="line">		for (int i = 0; i &lt; 10; i ++) &#123;</span><br><span class="line">			exec.execute(new Job());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h5 id="选择就绪"><a href="#选择就绪" class="headerlink" title="选择就绪"></a>选择就绪</h5><blockquote>
 <p>JDK自1.4起开始提供全新的 IO 编程类库，简称 NIO，其不但引入了全新高效的 Buffer 和 Channel ，同时还引入了基于 Selector 的非阻塞 IO 机制，将多个异步的 IO 操作集中到一个或几个线程当中进行处理。使用 NIO 代替阻塞 IO 能提高程序的并发吞吐能力，降低系统的开销。</p>
 </blockquote>
-<p>_对于每一个请求，单独开一个线程进行响应的逻辑处理，如果客户端的数据传递并不是一直进行，而是断断续续的，则相应线程需要 IO 等待，并进行上下文切换。</p>
+<p><em>对于每一个请求，单独开一个线程进行响应的逻辑处理，如果客户端的数据传递并不是一直进行，而是断断续续的，则相应线程需要 IO 等待，并进行上下文切换。</em></p>
+<p>Selector 机制使得线程不必等待客户端的 IO 就绪，当客户端还没就绪时，可以处理其他请求，提高了服务器的并发吞吐能力，降低了资源消耗。</p>
+<h5 id="减少上下文切换"><a href="#减少上下文切换" class="headerlink" title="减少上下文切换"></a>减少上下文切换</h5><p>进程上下文切换会有一定的调度开销，这个过程中操作系统和JVM会消耗一定的CPU周期，并且由于CPU处理器会缓存一部分数据，当新线程被切换进来时，它所需要的数据可能不在CPU缓存中，因此还会导致CPU缓存的命中率下降。</p>
+<h5 id="降低锁竞争"><a href="#降低锁竞争" class="headerlink" title="降低锁竞争"></a>降低锁竞争</h5><p>降低锁竞争的一种有效的方式是尽可能地缩短锁持有的时间，比如可以将一部分与锁无关的代码移出同步代码块，特别是执行起来开销较大的操作，以及可能使当前线程被阻塞的操作。<br>另一种减小锁持有时间的方式是减小锁的粒度，将原先使用单独锁来保护的多个变量变为采用多个相互独立的锁分别进行保护，这样就能够降低线程请求锁的几率，从而减少竞争发生的可能性。<strong>当然，使用的锁越多，发生死锁的风险也就越高。</strong><br>第三种降低锁竞争的方式就是放弃使用独占锁，而使用其他更友好的并发方式来保障数据的同步，原子变量就是使用读写锁。<br><em>对于多读少写的情况，使用读写锁能够比使用独占锁提供更高的并发数量。</em></p>
+<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><p>在进行数据传输之前，可以先将数据进行压缩，以减少网络传输的字节数，提升数据传输的速度。接收端可以将数据进行解压，以还原出传递的数据，并且经过压缩的数据还可以节约所耗费的存储介质(磁盘或内存)的空间与网络带宽，降低成本。<br>当然，压缩需要大量的CPU计算，并且根据压缩算法的不同，计算的复杂度和数据的压缩比也存在较大差异。</p>
+<h4 id="结果缓存"><a href="#结果缓存" class="headerlink" title="结果缓存"></a>结果缓存</h4><p>本地缓存，分布式缓存</p>
+<h4 id="数据库查询性能优化"><a href="#数据库查询性能优化" class="headerlink" title="数据库查询性能优化"></a>数据库查询性能优化</h4><p>以mysql为例</p>
+<h5 id="合理使用索引"><a href="#合理使用索引" class="headerlink" title="合理使用索引"></a>合理使用索引</h5><blockquote>
+<p>对于使用B树或B+树存储的组合索引来说，有一个最基本的原则，即“最左前缀”的原则，如果查询不是按照索引的最左列来开始查询，则无法使用到组合索引。</p>
+</blockquote>
+<h5 id="反范式设计"><a href="#反范式设计" class="headerlink" title="反范式设计"></a>反范式设计</h5><p>范式设计好处:</p>
+<ul>
+<li>冗余数据的减少，无疑节约了存储空间，而且保证了关系的一致性;</li>
+<li>由于冗余数据的减少，当数据需要进行更新时，要修改的数据则变少了，这样会提升更新操作的速度;</li>
+<li>范式化的表通常更小，可以更好地利用表的查询缓存来提高查询速度。<br><em>但是，对于大多数复杂的业务场景来说，数据表现的纬度不可能是单表的。因此在进行查询操作时，需要进行表的关联。这不仅代价高昂，由于查询条件指定的列可能并不在同一个表中，因此也无法使用到索引，这将导致数据库的性能严重下降。</em><blockquote>
+<p>为了尽可能地避免关联查询带来的性能损耗，有人提出了反范式设计，即将一些常用的需要关联查询的列进行冗余存储，以便减少表关联带来的随机IO和全盘扫描。</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="使用查询缓存"><a href="#使用查询缓存" class="headerlink" title="使用查询缓存"></a>使用查询缓存</h5><ul>
+<li>query_cache_type</li>
+<li>query_cache_size</li>
+<li>query_cache_limit</li>
+</ul>
+<h5 id="使用搜索引擎"><a href="#使用搜索引擎" class="headerlink" title="使用搜索引擎"></a>使用搜索引擎</h5><blockquote>
+<p>在分布式环境下，为了便于数据库扩展，提高并发处理能力，相关联的表可能并不在同一个数据库当中，而是分布在多个库当中，并且表也可能已经进行了切分，无法进行复杂的条件查询。这时候就需要搭建搜索引擎，将需要进行查询和展现的列通过一定的规则都建到索引当中，以提供复杂的垮表查询与分组操作。</p>
+</blockquote>
+<h5 id="使用-key-value-数据库"><a href="#使用-key-value-数据库" class="headerlink" title="使用 key-value 数据库"></a>使用 key-value 数据库</h5><blockquote>
+<p>对于保有海量数据的互联网企业来说，多表的关联查询是非常忌讳的。出于性能的考虑，更多时候往往根据表的主键来进行查询，或者进行简单的条件查询。因此，SQL的功能被很大程度地弱化了。</p>
+</blockquote>
+<h5 id="GC-优化"><a href="#GC-优化" class="headerlink" title="GC 优化"></a>GC 优化</h5><p>Parallel Scavenge 垃圾收集器是悲观策略，每次晋升到 OldGen 的平均大小如果大于当前OldGen的剩余空间，则触发一次FullGC。如果频繁发生，可以通过-Xmx与-Xms参数来调整整个堆的大小，以增加OldGen的大小，YoungGen对应的-Xmn保持不变。<br>默认情况下，CMS收集器的垃圾回收会在OldGen使用了68%空间时被激活，可以调大。但如果预留的内存无法满足程序需要，则会出现 concurrent mode failure。</p>
+<p><em>堆设置：</em></p>
+<ul>
+<li>Xms 是指程序启动时初始内存大小（此值可以设置成与-Xmx相同，以避免每次GC完成后 JVM 内存重新分配）。</li>
+<li>Xmx 指程序运行时最大可用内存大小，程序运行中内存大于这个值会 OutOfMemory。</li>
+<li>Xmn 年轻代大小（整个JVM内存大小 = 年轻代 + 年老代 + 永久代）。</li>
+<li>XX:NewRatio 年轻代与年老代的大小比例，-XX:NewRatio=4 设置为4，则年轻代与年老代所占比值为1：4。</li>
+<li>XX:SurvivorRatio 年轻代中Eden区与Survivor区的大小比值，-XX:SurvivorRatio=4，设置为4，则两个Survivor区与一个Eden区的比值为 2:4</li>
+<li>XX:MaxPermSize 设置永久代大小。</li>
+<li>XX:MaxTenuringThreshold 设置垃圾最大年龄。<br>如果设置为0的话，则年轻代对象不经过Survivor区，直接进入年老代。对于年老代比较多的应用，可以提高效率。如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概论。</li>
+<li>Xss 设置每个线程的堆栈大小。</li>
+</ul>
+<h5 id="硬件提升性能"><a href="#硬件提升性能" class="headerlink" title="硬件提升性能"></a>硬件提升性能</h5><p>内存越大越好，硬盘读写，避免网卡成为系统吞吐的瓶颈，CPU核数。</p>
+<h2 id="Java-应用故障排查"><a href="#Java-应用故障排查" class="headerlink" title="Java 应用故障排查"></a>Java 应用故障排查</h2><h4 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h4><ul>
+<li>jps  类似 linux 的 ps</li>
+<li>jstat  对虚拟机各种运营状态进行监控的工具，通过它可以查看虚拟机的类加载与卸载情况，管理内存使用和垃圾收集等信息，监视JIT即时编译器的运行情况等。</li>
+<li>jinfo  用于查看应用程序的配置参数，以及打印运行JVM时所指定的JVM参数。</li>
+<li>jstack  用来生成虚拟机当前的线程快照信息，线程快照就是当前虚拟机每一个线程正在执行的方法堆栈的集合。</li>
+<li>jmap  查看等待回收对象的队列，查看堆的概要信息，包括采用的是哪种GC收集器，堆空间的使用情况，以及通过JVM参数指定的各个内存空间的大小。</li>
+<li>BTrace  是一个开源的 Java 程序动态跟踪工具。基本原理是通过Hotspot虚拟机的HotSwap技术将跟踪的代码动态替换到被跟踪的Java程序内，以观察程序运行的细节。通过BTrace脚本，可以在方法执行时，输出传递给方法的参数与方法的返回值。</li>
+<li>JConsole  是一款JDK内置的图形化性能分析工具，它可以用来连接本地或者远程正在运行的JVM，对运行的Java应用程序的性能及资源消耗情况进行分析和监控，并提供可视化的图表对相关数据进行展现。</li>
+<li>Memory Analyzer      Eclipse 插件</li>
+<li>VisualVM  功能强大的 all-in-one 工具</li>
+</ul>
 
       
     </div>
@@ -928,7 +981,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#日志分析"><span class="nav-number">1.</span> <span class="nav-text">日志分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群监控"><span class="nav-number">2.</span> <span class="nav-text">集群监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监控指标"><span class="nav-number">2.1.</span> <span class="nav-text">监控指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#心跳检测"><span class="nav-number">2.2.</span> <span class="nav-text">心跳检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容量评估及应用水位"><span class="nav-number">2.3.</span> <span class="nav-text">容量评估及应用水位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流量控制"><span class="nav-number">3.</span> <span class="nav-text">流量控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流量控制实施"><span class="nav-number">3.1.</span> <span class="nav-text">流量控制实施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务稳定性"><span class="nav-number">3.2.</span> <span class="nav-text">服务稳定性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖管理"><span class="nav-number">3.2.1.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅降级"><span class="nav-number">3.2.2.</span> <span class="nav-text">优雅降级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务分级"><span class="nav-number">3.2.3.</span> <span class="nav-text">服务分级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开关"><span class="nav-number">3.2.4.</span> <span class="nav-text">开关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应急预案"><span class="nav-number">3.2.5.</span> <span class="nav-text">应急预案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高并发系统设计"><span class="nav-number">3.3.</span> <span class="nav-text">高并发系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#操作原子性"><span class="nav-number">3.3.1.</span> <span class="nav-text">操作原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程同步"><span class="nav-number">3.3.2.</span> <span class="nav-text">多线程同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据一致性"><span class="nav-number">3.3.3.</span> <span class="nav-text">数据一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统可扩展性"><span class="nav-number">3.3.4.</span> <span class="nav-text">系统可扩展性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发减库存"><span class="nav-number">3.3.5.</span> <span class="nav-text">并发减库存</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">4.</span> <span class="nav-text">性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何寻找性能的瓶颈"><span class="nav-number">4.1.</span> <span class="nav-text">如何寻找性能的瓶颈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端优化工具-YSlow"><span class="nav-number">4.1.1.</span> <span class="nav-text">前端优化工具 YSlow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面响应时间"><span class="nav-number">4.1.2.</span> <span class="nav-text">页面响应时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法响应时间"><span class="nav-number">4.1.3.</span> <span class="nav-text">方法响应时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC日志分析"><span class="nav-number">4.1.4.</span> <span class="nav-text">GC日志分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库查询"><span class="nav-number">4.1.5.</span> <span class="nav-text">数据库查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统资源使用"><span class="nav-number">4.1.6.</span> <span class="nav-text">系统资源使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能测试工具"><span class="nav-number">4.2.</span> <span class="nav-text">性能测试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ab"><span class="nav-number">4.2.1.</span> <span class="nav-text">ab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apache-JMeter"><span class="nav-number">4.2.2.</span> <span class="nav-text">Apache JMeter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HP-LoadRunner"><span class="nav-number">4.2.3.</span> <span class="nav-text">HP LoadRunner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向代理引流"><span class="nav-number">4.2.4.</span> <span class="nav-text">反向代理引流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCPCopy"><span class="nav-number">4.2.5.</span> <span class="nav-text">TCPCopy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化措施"><span class="nav-number">4.3.</span> <span class="nav-text">性能优化措施</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端性能优化"><span class="nav-number">4.3.1.</span> <span class="nav-text">前端性能优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-程序优化"><span class="nav-number">4.3.2.</span> <span class="nav-text">Java 程序优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单例"><span class="nav-number">4.3.2.1.</span> <span class="nav-text">单例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Future-模式"><span class="nav-number">4.3.2.2.</span> <span class="nav-text">Future 模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池"><span class="nav-number">4.3.2.3.</span> <span class="nav-text">线程池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择就绪"><span class="nav-number">4.3.2.4.</span> <span class="nav-text">选择就绪</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#日志分析"><span class="nav-number">1.</span> <span class="nav-text">日志分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息"><span class="nav-number">1.1.</span> <span class="nav-text">信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">1.2.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群监控"><span class="nav-number">2.</span> <span class="nav-text">集群监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监控指标"><span class="nav-number">2.1.</span> <span class="nav-text">监控指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#心跳检测"><span class="nav-number">2.2.</span> <span class="nav-text">心跳检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容量评估及应用水位"><span class="nav-number">2.3.</span> <span class="nav-text">容量评估及应用水位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流量控制"><span class="nav-number">3.</span> <span class="nav-text">流量控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流量控制实施"><span class="nav-number">3.1.</span> <span class="nav-text">流量控制实施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务稳定性"><span class="nav-number">3.2.</span> <span class="nav-text">服务稳定性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖管理"><span class="nav-number">3.2.1.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅降级"><span class="nav-number">3.2.2.</span> <span class="nav-text">优雅降级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务分级"><span class="nav-number">3.2.3.</span> <span class="nav-text">服务分级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开关"><span class="nav-number">3.2.4.</span> <span class="nav-text">开关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应急预案"><span class="nav-number">3.2.5.</span> <span class="nav-text">应急预案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高并发系统设计"><span class="nav-number">3.3.</span> <span class="nav-text">高并发系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#操作原子性"><span class="nav-number">3.3.1.</span> <span class="nav-text">操作原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程同步"><span class="nav-number">3.3.2.</span> <span class="nav-text">多线程同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据一致性"><span class="nav-number">3.3.3.</span> <span class="nav-text">数据一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统可扩展性"><span class="nav-number">3.3.4.</span> <span class="nav-text">系统可扩展性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发减库存"><span class="nav-number">3.3.5.</span> <span class="nav-text">并发减库存</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">4.</span> <span class="nav-text">性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何寻找性能的瓶颈"><span class="nav-number">4.1.</span> <span class="nav-text">如何寻找性能的瓶颈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端优化工具-YSlow"><span class="nav-number">4.1.1.</span> <span class="nav-text">前端优化工具 YSlow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面响应时间"><span class="nav-number">4.1.2.</span> <span class="nav-text">页面响应时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法响应时间"><span class="nav-number">4.1.3.</span> <span class="nav-text">方法响应时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC日志分析"><span class="nav-number">4.1.4.</span> <span class="nav-text">GC日志分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库查询"><span class="nav-number">4.1.5.</span> <span class="nav-text">数据库查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统资源使用"><span class="nav-number">4.1.6.</span> <span class="nav-text">系统资源使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能测试工具"><span class="nav-number">4.2.</span> <span class="nav-text">性能测试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ab"><span class="nav-number">4.2.1.</span> <span class="nav-text">ab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apache-JMeter"><span class="nav-number">4.2.2.</span> <span class="nav-text">Apache JMeter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HP-LoadRunner"><span class="nav-number">4.2.3.</span> <span class="nav-text">HP LoadRunner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向代理引流"><span class="nav-number">4.2.4.</span> <span class="nav-text">反向代理引流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCPCopy"><span class="nav-number">4.2.5.</span> <span class="nav-text">TCPCopy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化措施"><span class="nav-number">4.3.</span> <span class="nav-text">性能优化措施</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端性能优化"><span class="nav-number">4.3.1.</span> <span class="nav-text">前端性能优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-程序优化"><span class="nav-number">4.3.2.</span> <span class="nav-text">Java 程序优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单例"><span class="nav-number">4.3.2.1.</span> <span class="nav-text">单例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Future-模式"><span class="nav-number">4.3.2.2.</span> <span class="nav-text">Future 模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池"><span class="nav-number">4.3.2.3.</span> <span class="nav-text">线程池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择就绪"><span class="nav-number">4.3.2.4.</span> <span class="nav-text">选择就绪</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#减少上下文切换"><span class="nav-number">4.3.2.5.</span> <span class="nav-text">减少上下文切换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#降低锁竞争"><span class="nav-number">4.3.2.6.</span> <span class="nav-text">降低锁竞争</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩"><span class="nav-number">4.3.3.</span> <span class="nav-text">压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果缓存"><span class="nav-number">4.3.4.</span> <span class="nav-text">结果缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库查询性能优化"><span class="nav-number">4.3.5.</span> <span class="nav-text">数据库查询性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#合理使用索引"><span class="nav-number">4.3.5.1.</span> <span class="nav-text">合理使用索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#反范式设计"><span class="nav-number">4.3.5.2.</span> <span class="nav-text">反范式设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用查询缓存"><span class="nav-number">4.3.5.3.</span> <span class="nav-text">使用查询缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用搜索引擎"><span class="nav-number">4.3.5.4.</span> <span class="nav-text">使用搜索引擎</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-key-value-数据库"><span class="nav-number">4.3.5.5.</span> <span class="nav-text">使用 key-value 数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GC-优化"><span class="nav-number">4.3.5.6.</span> <span class="nav-text">GC 优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#硬件提升性能"><span class="nav-number">4.3.5.7.</span> <span class="nav-text">硬件提升性能</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-应用故障排查"><span class="nav-number">5.</span> <span class="nav-text">Java 应用故障排查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用工具"><span class="nav-number">5.0.1.</span> <span class="nav-text">常用工具</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1524,7 +1577,42 @@
           
         })
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -1541,40 +1629,5 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
