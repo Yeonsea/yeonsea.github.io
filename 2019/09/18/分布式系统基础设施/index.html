@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="Đinh Giang">
 <meta property="og:description" content="一个大型、稳健、成熟的分布式系统的背后，往往会涉及众多的支撑系统，我们将这些支撑系统称为分布式系统的基础设施。  分布式缓存由于单台机器的内存资源和承载能力有限，并且如果大量使用本地缓存，也会使相同的数据被不同的节点存储多份，对内存资源造成较大的浪费，因此才催生出了分布式缓存。 memcache用于在应用中减少对数据库的访问，提高应用的访问速度，并降低数据库的负载。memcache 使用 key">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-18T07:17:03.672Z">
+<meta property="og:updated_time" content="2019-09-18T07:21:27.734Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式系统基础设施">
 <meta name="twitter:description" content="一个大型、稳健、成熟的分布式系统的背后，往往会涉及众多的支撑系统，我们将这些支撑系统称为分布式系统的基础设施。  分布式缓存由于单台机器的内存资源和承载能力有限，并且如果大量使用本地缓存，也会使相同的数据被不同的节点存储多份，对内存资源造成较大的浪费，因此才催生出了分布式缓存。 memcache用于在应用中减少对数据库的访问，提高应用的访问速度，并降低数据库的负载。memcache 使用 key">
@@ -448,7 +448,7 @@
                 
               
 
-              <time title="创建时间：2019-09-18 14:49:09 / 修改时间：15:17:03" itemprop="dateCreated datePublished" datetime="2019-09-18T14:49:09+08:00">2019-09-18</time>
+              <time title="创建时间：2019-09-18 14:49:09 / 修改时间：15:21:27" itemprop="dateCreated datePublished" datetime="2019-09-18T14:49:09+08:00">2019-09-18</time>
             
 
             
@@ -576,7 +576,7 @@
 <li>将session 统一存储在缓存集群上，可以保证较高的读写性能，可以利用缓存的失效机制，但一旦缓存重启，里面保存的会话也就丢失了。</li>
 </ul>
 <p>通过将 session 以 sessionid 作为 key，保存到后端的缓存集群中，使得不管请求如何分配，即便是 Web Server 宕机，也不会影响其他 Web Server 通过 sessionid 从 Cache Server 中获得 session，这样既实现了集群间的 session 同步，又提高了 Web Server 的容错性。</p>
-<p>memcache-session-manager 是一个开源的高可用的 Tomcat session 共享解决方案，支持 Sticky 模式和 Non-Sticky 模式。<br>以 Non-Sticky 模式为例，它需要给 Tomcat 的 $CATALINA_HOME/conf/context.xml 文件配置 SessionManager，具体配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;Manager className=<span class="string">"de.javakaffee.web.msm.MemcachedBackupSessionManager"</span></span><br><span class="line">	memcachedNodes=<span class="string">"n1:192.168.0.100,:11211, n2:192.168.0.101:11211"</span></span><br><span class="line">	Sticky=<span class="string">"false"</span></span><br><span class="line">	sessionBackupAsync=<span class="string">"false"</span></span><br><span class="line">	lockingNode=<span class="string">"auto"</span></span><br><span class="line">	requestUriIgnorePattern=<span class="string">".*\.(ico|png|gif|jpg|css|js)$"</span></span><br><span class="line">	transcoderFactoryClass = <span class="string">"de.javakaffee.web.msm.serializer.kryo.KryoTranscoderFactory"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure></p>
+<p>memcache-session-manager 是一个开源的高可用的 Tomcat session 共享解决方案，支持 Sticky 模式和 Non-Sticky 模式。<br>以 Non-Sticky 模式为例，它需要给 Tomcat 的 $CATALINA_HOME/conf/context.xml 文件配置 SessionManager，具体配置如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"de.javakaffee.web.msm.MemcachedBackupSessionManager"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">memcachedNodes</span>=<span class="string">"n1:192.168.0.100,:11211, n2:192.168.0.101:11211"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">Sticky</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">sessionBackupAsync</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">lockingNode</span>=<span class="string">"auto"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">requestUriIgnorePattern</span>=<span class="string">".*\.(ico|png|gif|jpg|css|js)$"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">transcoderFactoryClass</span> = <span class="string">"de.javakaffee.web.msm.serializer.kryo.KryoTranscoderFactory"</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="持久化存储"><a href="#持久化存储" class="headerlink" title="持久化存储"></a>持久化存储</h2><p>面对并发访问量的激增和数据几何级的增长，如何存储正在迅速膨胀并且不断累积的数据，以及应对日益增长的用户访问频次，称为亟待解决的问题。</p>
 <p>传统IOE解决方案，使用和扩展的成本越来越高，使得互联网企业不得不思考新的解决方案。开源软件加廉价PC Server的分布式架构，得益于社区的支持。在节约成本的同时，也给系统带来了良好的扩展能力，并且由于开源软件的代码透明，使得企业能够以更低的代价定制更符合自身使用场景的功能，以提高系统的整体性能。</p>
 <h3 id="MySQL-扩展"><a href="#MySQL-扩展" class="headerlink" title="MySQL 扩展"></a>MySQL 扩展</h3><h4 id="业务拆分"><a href="#业务拆分" class="headerlink" title="业务拆分"></a>业务拆分</h4><blockquote>
@@ -1459,42 +1459,7 @@
           
         })
     });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -1511,5 +1476,40 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
