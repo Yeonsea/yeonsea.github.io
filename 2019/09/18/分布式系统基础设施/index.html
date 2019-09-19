@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="Đinh Giang">
 <meta property="og:description" content="一个大型、稳健、成熟的分布式系统的背后，往往会涉及众多的支撑系统，我们将这些支撑系统称为分布式系统的基础设施。  分布式缓存由于单台机器的内存资源和承载能力有限，并且如果大量使用本地缓存，也会使相同的数据被不同的节点存储多份，对内存资源造成较大的浪费，因此才催生出了分布式缓存。 memcache用于在应用中减少对数据库的访问，提高应用的访问速度，并降低数据库的负载。memcache 使用 key">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-18T07:21:27.734Z">
+<meta property="og:updated_time" content="2019-09-19T09:28:19.341Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式系统基础设施">
 <meta name="twitter:description" content="一个大型、稳健、成熟的分布式系统的背后，往往会涉及众多的支撑系统，我们将这些支撑系统称为分布式系统的基础设施。  分布式缓存由于单台机器的内存资源和承载能力有限，并且如果大量使用本地缓存，也会使相同的数据被不同的节点存储多份，对内存资源造成较大的浪费，因此才催生出了分布式缓存。 memcache用于在应用中减少对数据库的访问，提高应用的访问速度，并降低数据库的负载。memcache 使用 key">
@@ -448,12 +448,24 @@
                 
               
 
-              <time title="创建时间：2019-09-18 14:49:09 / 修改时间：15:21:27" itemprop="dateCreated datePublished" datetime="2019-09-18T14:49:09+08:00">2019-09-18</time>
+              <time title="创建时间：2019-09-18 14:49:09" itemprop="dateCreated datePublished" datetime="2019-09-18T14:49:09+08:00">2019-09-18</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-19 17:28:19" itemprop="dateModified" datetime="2019-09-19T17:28:19+08:00">2019-09-19</time>
               
             
           </span>
@@ -501,7 +513,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">5k</span>
+                <span title="本文字数">11k</span>
               
 
               
@@ -515,7 +527,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">5 分钟</span>
+                <span title="阅读时长">10 分钟</span>
               
             </div>
           
@@ -626,7 +638,23 @@
 <blockquote>
 <p>本质实际上是一张稀疏的大表，用来存储粗粒度的结构化数据，并且能够通过简单地增加节点来实现系统的线性扩展。</p>
 </blockquote>
-
+<p>HBase 运行在分布式文件系统 HDFS 之上，利用它可以在廉价的 PC Server 上搭建大规模结构化存储集群。</p>
+<p>HBase 集群中通常包含两种角色，HMaster 和 HRegionServer。当表随着记录条数的增加而不断变大后，将会分裂成一个个Region，每个 Region 可以由(startkey，endkey)来表示，它包含一个 startkey 到 endkey 的半闭区间。<br>一个 HRegion 可以管理多个 Region，并由 HMaster 来负责 HRegionServer 的调度及集群状态的监管。</p>
+<h4 id="HBase-安装"><a href="#HBase-安装" class="headerlink" title="HBase 安装"></a>HBase 安装</h4><ol>
+<li>下载</li>
+<li>编辑 hbase-env.sh ，设置 JAVA_HOME</li>
+<li>编辑 hbase-site.xml 文件</li>
+<li>启动 HBase  先启动 Hadoop 再启动 HBase<h4 id="HBase-API"><a href="#HBase-API" class="headerlink" title="HBase API"></a>HBase API</h4>以 Java 为例：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 配置 HBase 的 HMaster 服务器地址和对应的端口（默认为60000），以及对应的 ZooKeeper 服务器地址和端口</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Configuration conf = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">	conf = HBaseConfiguration.create();</span><br><span class="line">	conf.set(<span class="string">"hbase.ZooKeeper.property.clientPort"</span>, <span class="string">"2181"</span>);</span><br><span class="line">	conf.set(<span class="string">"hbase.ZooKeeper.quorum"</span>, <span class="string">"192.168.136.135:60000"</span>);</span><br><span class="line">	conf.set(<span class="string">"hbase.master"</span>, <span class="string">"192.168.136.135:60000"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 通过程序增加 user 表，包含三个列族，分别为 info、class、parent，如果该表已经存在，则先删除该表</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createTable</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String tableName = <span class="string">"user"</span>;</span><br><span class="line">	HBaseAdmin hBaseAdmin = <span class="keyword">new</span> hBaseAdmin(conf);</span><br><span class="line">	<span class="keyword">if</span> (hBaseAdmin.tableExists(tableName)) &#123;</span><br><span class="line">		hBaseAdmin.disableTable(tableName);</span><br><span class="line">		hBaseAdmin.deleteTable(tableName);</span><br><span class="line">	&#125;</span><br><span class="line">	HTableDescriptor tableDescriptor = <span class="keyword">new</span> HTableDescriptor(tableName.valueOf(tableName));</span><br><span class="line">	tableDescriptor.addFamily(<span class="keyword">new</span> HColumnDescriptor(<span class="string">"info"</span>));</span><br><span class="line">	tableDescriptor.addFamily(<span class="keyword">new</span> HColumnDescriptor(<span class="string">"class"</span>));</span><br><span class="line">	tableDescriptor.addFamily(<span class="keyword">new</span> HColumnDescriptor(<span class="string">"parent"</span>));</span><br><span class="line">	hBaseAdmin.createTable(tableDescriptor);</span><br><span class="line">	hBaseAdmin.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 将数据添加到 user 表，每个列族指定一个列 col, 并给该列赋值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">putRow</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String tableName = <span class="string">"user"</span>;</span><br><span class="line">	String[] familyNames = &#123;<span class="string">"info"</span>, <span class="string">"class"</span>, <span class="string">"parent"</span>&#125;;</span><br><span class="line">	HTable table = <span class="keyword">new</span> HTable(conf, tableName);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; familyNames.length; j++) &#123;</span><br><span class="line">			Put put = <span class="keyword">new</span> Put(Bytes.toBytes(i + <span class="string">""</span>));</span><br><span class="line">			put.add(Bytes.toBytes(familyNames[j]),</span><br><span class="line">					Bytes.toBytes(<span class="string">"col"</span>),</span><br><span class="line">					Bytes.toBytes(<span class="string">"value_"</span> + i + <span class="string">"_"</span> + j));</span><br><span class="line">			table.put(put);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	table.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 取得 rowkey 为 1 的行，并将该行打印出来</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getRow</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	String tableName = <span class="string">"user"</span>;</span><br><span class="line">	String rowKey = <span class="string">"1"</span>;</span><br><span class="line">	HTable table = <span class="keyword">new</span> HTable(conf, tableName);</span><br><span class="line">	Get g = <span class="keyword">new</span> Get(Bytes.toBytes(rowKey));</span><br><span class="line">	Result r = table.get(g);</span><br><span class="line">	outputResult(r);</span><br><span class="line">	table.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">outputResult</span><span class="params">(Result rs)</span> </span>&#123;</span><br><span class="line">	List&lt;Cell&gt; list = rs.listCells();</span><br><span class="line">	System.out.println(<span class="string">"row key: "</span> + <span class="keyword">new</span> String(rs.getRow()));</span><br><span class="line">	<span class="keyword">for</span> (Cell cell : list) &#123;</span><br><span class="line">		System.out.println(<span class="string">"family: "</span> + <span class="keyword">new</span> String(cell.getFamily()) </span><br><span class="line">		+ <span class="string">", col: "</span> + <span class="keyword">new</span> String(cell.getQualifier())</span><br><span class="line">		+ <span class="string">", value: "</span> + <span class="keyword">new</span> String(cell.getValue()) );</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* scan 扫描 user 表，并将查询结果打印出来</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">scanTable</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String tableName = <span class="string">"user"</span>;</span><br><span class="line">	HTable table = <span class="keyword">new</span> HTable(conf, tableName);</span><br><span class="line">	Scan a = <span class="keyword">new</span> Scan();</span><br><span class="line">	ResultScanner rs = table.getScanner(s);</span><br><span class="line">	<span class="keyword">for</span> (Result r : rs) &#123;</span><br><span class="line">		outputResult(r);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置 startrow 和 endrow 进行查询</span></span><br><span class="line">	s = <span class="keyword">new</span> Scan(<span class="string">"2"</span>.getBytes(), <span class="string">"6"</span>.getBytes());</span><br><span class="line">	rs = table.getScanner(s);</span><br><span class="line">	<span class="keyword">for</span> (Result r : rs) &#123;</span><br><span class="line">		outputResult(r);</span><br><span class="line">	&#125;</span><br><span class="line">	table.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 删除 rowkey 为 1 的记录</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deleteRow</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	String tableName = <span class="string">"user"</span>;</span><br><span class="line">	String rowKey = <span class="string">"1"</span>;</span><br><span class="line">	HTable table = <span class="keyword">new</span> HTable(conf, tableName);</span><br><span class="line">	List&lt;Delete&gt; list = <span class="keyword">new</span> ArrayList&lt;Delete&gt;();</span><br><span class="line">	Delete d = <span class="keyword">new</span> Delete(rowkey.getBytes());</span><br><span class="line">	list.add(d);</span><br><span class="line">	table.delete(list);</span><br><span class="line">	table.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="rowkey-设计"><a href="#rowkey-设计" class="headerlink" title="rowkey 设计"></a>rowkey 设计</h4><p>要想访问 HBase 的行，只有三种方式，一种是通过指定 rowkey 进行访问，另一种是指定 rowkey 的 range 进行 scan，再者就是全盘扫描。</p>
+<blockquote>
+<p>关系型数据库能够很好地支持多条件查询，但对于 HBase 来说，实现起来并不是那么的容易。基本的思路就是建立一张二级索引表，将查询条件设计成二级索引表的rowkey，而存储的数据则是数据表的rowkey，这样就可以在一定程度上实现多个条件的查询。但是二级索引表也会引入一系列的问题，多表的插入将降低数据写入的性能，并且由于多表之间无事务保障，可能会带来数据一致性问题。(华为提供了 hindex 的二级索引解决方案)</p>
+</blockquote>
+<p>与传统的关系型数据库相比，HBase 有更好的伸缩能力，更适合于海量数据的存储和处理。由于多个 Region Server 的存在，使得 HBase 能够多个节点同时写入，显著提高了写入性能，并且是可扩展的。</p>
+<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>与其他很多 key-value 数据库的不同之处在于，Redis 不仅支持简单的键值对类型的存储，还支持其他一系列丰富的数据存储结构，并在这些数据结构类型上定义了一套强大的 API。</p>
+<h4 id="安装-Redis"><a href="#安装-Redis" class="headerlink" title="安装 Redis"></a>安装 Redis</h4><h4 id="使用-Redis-API"><a href="#使用-Redis-API" class="headerlink" title="使用 Redis API"></a>使用 Redis API</h4><p>Redis 的 Java client 有很多，比较常用的是 Jedis。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.136.135"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 基本操作</span></span><br><span class="line">redis.set(<span class="string">"name"</span>, <span class="string">"yeonsea"</span>);	<span class="comment">// 设置 key-value</span></span><br><span class="line">redis.setex(<span class="string">"content"</span>, <span class="number">5</span>, <span class="string">"hello"</span>);	<span class="comment">// 设置 key-value 有效期为 5 秒</span></span><br><span class="line">redis.mset(<span class="string">"class"</span>, <span class="string">"a"</span>, <span class="string">"age"</span>, <span class="string">"25"</span>);	<span class="comment">// 一次设置多个 key-value</span></span><br><span class="line">redis.append(<span class="string">"content"</span>, <span class="string">" lucy"</span>);	<span class="comment">// 给字符串追加内容</span></span><br><span class="line">String content = redis.get(<span class="string">"content"</span>);	<span class="comment">// 根据 key 获取 value </span></span><br><span class="line">List&lt;String&gt; list = redis.mget(<span class="string">"class"</span>, <span class="string">"age"</span>);	<span class="comment">// 一次获取多个 key</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// hashs 操作</span></span><br><span class="line">redis.hset(<span class="string">"url"</span>, <span class="string">"google"</span>, <span class="string">"www.google.com"</span>);	<span class="comment">// 给 Hash 添加 key-value</span></span><br><span class="line">redis.hset(<span class="string">"url"</span>, <span class="string">"taobao"</span>, <span class="string">"www.taobao.com"</span>);</span><br><span class="line">redis.hset(<span class="string">"url"</span>, <span class="string">"sina"</span>, <span class="string">"www.sina.com.cn"</span>);</span><br><span class="line"></span><br><span class="line">Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">map.put(<span class="string">"name"</span>, <span class="string">"yeon"</span>);</span><br><span class="line">map.put(<span class="string">"sex"</span>, <span class="string">"male"</span>);</span><br><span class="line">map.put(<span class="string">"age"</span>, <span class="string">"100"</span>);</span><br><span class="line">redis.hmset(<span class="string">"userinfo"</span>, map);	<span class="comment">// 批量设置值</span></span><br><span class="line"></span><br><span class="line">String name = redis.hget(<span class="string">"userinfo"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取 Hash 的多个 key 的值</span></span><br><span class="line">List&lt;String&gt; urlist = redis.hmget(<span class="string">"url"</span>, <span class="string">"google"</span>, <span class="string">"taobao"</span>, <span class="string">"sina"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取 Hash 的所有 key 的值</span></span><br><span class="line">Map&lt;String, String&gt; userinfo = redis.hgetAll(<span class="string">"userinfo"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// lists 操作</span></span><br><span class="line">redis.lpush(<span class="string">"charlist"</span>, <span class="string">"abc"</span>);	<span class="comment">// 在 list 首部添加元素</span></span><br><span class="line">redis.rpush(<span class="string">"charlist"</span>, <span class="string">"hij"</span>);	<span class="comment">// 在 list 尾部添加元素</span></span><br><span class="line">List&lt;String&gt; charlist = redis.lrange(<span class="string">"charlist"</span>, <span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line">redis.lpop(<span class="string">"charlist"</span>);	<span class="comment">// 在 list 首部删除元素</span></span><br><span class="line">redis.rpop(<span class="string">"charlist"</span>);	<span class="comment">// 在 list 尾部删除元素</span></span><br><span class="line">Long charlistSize = redis.llen(<span class="string">"charlist"</span>);	<span class="comment">// 获得 list 的大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// sets</span></span><br><span class="line">redis.sadd(<span class="string">"SetMem"</span>, <span class="string">"s1"</span>);	<span class="comment">// 给 set 添加元素</span></span><br><span class="line">redis.srem(<span class="string">"SetMem"</span>, <span class="string">"s1"</span>); <span class="comment">// 从 set 中移除元素</span></span><br><span class="line">Set&lt;String&gt; set = redis.smember(<span class="string">"SetMem"</span>);	<span class="comment">// 枚举出 set 的元素</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//sorted sets 是 set 的一个升级版本</span></span><br><span class="line">redis.zadd(<span class="string">"SortSetMem"</span>, <span class="number">1</span>, <span class="string">"5th"</span>);	<span class="comment">// 插入 sort set，并指定元素的序号</span></span><br><span class="line">redis.zadd(<span class="string">"SortSetMem"</span>, <span class="number">2</span>, <span class="string">"4th"</span>);</span><br><span class="line">redis.zadd(<span class="string">"SortSetMem"</span>, <span class="number">3</span>, <span class="string">"3th"</span>);</span><br><span class="line">redis.zadd(<span class="string">"SortSetMem"</span>, <span class="number">4</span>, <span class="string">"2th"</span>);</span><br><span class="line">redis.zadd(<span class="string">"SortSetMem"</span>, <span class="number">5</span>, <span class="string">"1th"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据范围取 set</span></span><br><span class="line">Set&lt;String&gt; sorted = redis.zrange(<span class="string">"SortSetMem"</span>, <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据范围反向取 set</span></span><br><span class="line">Set&lt;String&gt; revsorset = redis.zrevrange(<span class="string">"SortSetMem"</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="消息系统"><a href="#消息系统" class="headerlink" title="消息系统"></a>消息系统</h2>
       
     </div>
 
@@ -863,7 +891,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式缓存"><span class="nav-number">1.</span> <span class="nav-text">分布式缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#memcache"><span class="nav-number">1.1.</span> <span class="nav-text">memcache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memcache-API-与分布式"><span class="nav-number">1.2.</span> <span class="nav-text">memcache API 与分布式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式-session"><span class="nav-number">1.3.</span> <span class="nav-text">分布式 session</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化存储"><span class="nav-number">2.</span> <span class="nav-text">持久化存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-扩展"><span class="nav-number">2.1.</span> <span class="nav-text">MySQL 扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#业务拆分"><span class="nav-number">2.1.1.</span> <span class="nav-text">业务拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制策略"><span class="nav-number">2.1.2.</span> <span class="nav-text">复制策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分表与分库"><span class="nav-number">2.1.3.</span> <span class="nav-text">分表与分库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HBase"><span class="nav-number">2.2.</span> <span class="nav-text">HBase</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式缓存"><span class="nav-number">1.</span> <span class="nav-text">分布式缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#memcache"><span class="nav-number">1.1.</span> <span class="nav-text">memcache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memcache-API-与分布式"><span class="nav-number">1.2.</span> <span class="nav-text">memcache API 与分布式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式-session"><span class="nav-number">1.3.</span> <span class="nav-text">分布式 session</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化存储"><span class="nav-number">2.</span> <span class="nav-text">持久化存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-扩展"><span class="nav-number">2.1.</span> <span class="nav-text">MySQL 扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#业务拆分"><span class="nav-number">2.1.1.</span> <span class="nav-text">业务拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制策略"><span class="nav-number">2.1.2.</span> <span class="nav-text">复制策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分表与分库"><span class="nav-number">2.1.3.</span> <span class="nav-text">分表与分库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HBase"><span class="nav-number">2.2.</span> <span class="nav-text">HBase</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HBase-安装"><span class="nav-number">2.2.1.</span> <span class="nav-text">HBase 安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HBase-API"><span class="nav-number">2.2.2.</span> <span class="nav-text">HBase API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rowkey-设计"><span class="nav-number">2.2.3.</span> <span class="nav-text">rowkey 设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis"><span class="nav-number">2.3.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-Redis"><span class="nav-number">2.3.1.</span> <span class="nav-text">安装 Redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Redis-API"><span class="nav-number">2.3.2.</span> <span class="nav-text">使用 Redis API</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息系统"><span class="nav-number">3.</span> <span class="nav-text">消息系统</span></a></li></ol></div>
             
 
           </div>
@@ -1459,7 +1487,42 @@
           
         })
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -1476,40 +1539,5 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
