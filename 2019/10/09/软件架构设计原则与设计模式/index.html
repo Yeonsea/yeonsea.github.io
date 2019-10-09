@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_package_v0.16/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_package_v0.16/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_package_v0.16/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/favicon_package_v0.16/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="软件架构设计原则开闭原则Open-Closed Principle，OCP是指一个软件实体(如类、模块和函数)应该对扩展开放，对修改关闭。 依赖倒置原则Dependence Inversion Principle，DIP是指设计代码结构时，高层模块不应该依赖低层模块，二者都应该依赖其抽象。抽象不应该依赖细节，细节应该依赖抽象。 单一职责原则Simple Responsibiy Principle，">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件架构设计原则与设计模式">
+<meta property="og:url" content="http://yeonsea.club/2019/10/09/软件架构设计原则与设计模式/index.html">
+<meta property="og:site_name" content="Đinh Giang">
+<meta property="og:description" content="软件架构设计原则开闭原则Open-Closed Principle，OCP是指一个软件实体(如类、模块和函数)应该对扩展开放，对修改关闭。 依赖倒置原则Dependence Inversion Principle，DIP是指设计代码结构时，高层模块不应该依赖低层模块，二者都应该依赖其抽象。抽象不应该依赖细节，细节应该依赖抽象。 单一职责原则Simple Responsibiy Principle，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-09T02:30:43.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="软件架构设计原则与设计模式">
+<meta name="twitter:description" content="软件架构设计原则开闭原则Open-Closed Principle，OCP是指一个软件实体(如类、模块和函数)应该对扩展开放，对修改关闭。 依赖倒置原则Dependence Inversion Principle，DIP是指设计代码结构时，高层模块不应该依赖低层模块，二者都应该依赖其抽象。抽象不应该依赖细节，细节应该依赖抽象。 单一职责原则Simple Responsibiy Principle，">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Đinh Giang" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yeonsea.club/2019/10/09/软件架构设计原则与设计模式/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>软件架构设计原则与设计模式 | Đinh Giang</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+  
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/Yeonsea" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Đinh Giang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">人生は意味が、唯一の生活をすることができますが见つかりました楽しいこと、 のような花が见つかる、あなた様と私が见つかりました</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/猫になりたい" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yeonsea.club/2019/10/09/软件架构设计原则与设计模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="J">
+      <meta itemprop="description" content="Was mich nicht umbringt, macht mich stärker.">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Đinh Giang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">软件架构设计原则与设计模式
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-09 10:23:12 / 修改时间：10:30:43" itemprop="dateCreated datePublished" datetime="2019-10-09T10:23:12+08:00">2019-10-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/09/软件架构设计原则与设计模式/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/10/09/软件架构设计原则与设计模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/10/09/软件架构设计原则与设计模式/" class="leancloud_visitors" data-flag-title="软件架构设计原则与设计模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">7.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">7 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+        
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="软件架构设计原则"><a href="#软件架构设计原则" class="headerlink" title="软件架构设计原则"></a>软件架构设计原则</h1><h2 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h2><p>Open-Closed Principle，OCP<br>是指一个软件实体(如类、模块和函数)应该对扩展开放，对修改关闭。</p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>Dependence Inversion Principle，DIP<br>是指设计代码结构时，高层模块不应该依赖低层模块，二者都应该依赖其抽象。<br>抽象不应该依赖细节，细节应该依赖抽象。</p>
+<h2 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h2><p>Simple Responsibiy Principle，SRP<br>是指不要存在多于一个导致类变更的原因。<br>总体来说，就是一个类、接口或方法只负责一项职责。</p>
+<h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><p>Interface Segregation Principle，ISP<br>是指用多个专门的接口，而不使用单一的总接口，客户端不应该依赖它不需要的接口。</p>
+<h2 id="迪米特原则"><a href="#迪米特原则" class="headerlink" title="迪米特原则"></a>迪米特原则</h2><p>Law of Demeter，LoD<br>是指一个对象应该对其他对象保持最少了解，又叫最少知道原则(Least Knowledge Principle，LKP)，尽量降低类与类之间的耦合度。</p>
+<h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><p>Liskov Substitution Principle，LSP<br>是指如果对每一个类型为 T1 的对象 o1，都有类型为 T2 的对象 o2，使得以 T1 定义的所有程序 P 在所有对象 o1 都替换成 o2 时，程序 P 的行为没有发生变化，那么类型 T2 是类型 T1 的子类型。</p>
+<h2 id="合成复用原则"><a href="#合成复用原则" class="headerlink" title="合成复用原则"></a>合成复用原则</h2><p>Composite/Aggregate Reuse Principle，CARP<br>是指尽量使用对象组合(has-a)/聚合(contanis-a)而不是继承关系达到软件复用的目的。</p>
+<h1 id="Spring-中常用的设计模式"><a href="#Spring-中常用的设计模式" class="headerlink" title="Spring 中常用的设计模式"></a>Spring 中常用的设计模式</h1><p>设计模式作用：</p>
+<ul>
+<li>写出优雅的代码</li>
+<li>更好地重构项目</li>
+</ul>
+<p>经典框架都在用设计模式解决问题：<br>命名对照：</p>
+<ul>
+<li>工厂模式  BeanFactory</li>
+<li>装饰者模式  BeanWrapper</li>
+<li>代理模式  AopProxy</li>
+<li>委派模式  DispatcherServlet</li>
+<li>策略模式  HandlerMapping</li>
+<li>适配器模式  HandlerAdapter</li>
+<li>模板模式  JdbcTemplate</li>
+<li>观察者模式  ContextLoaderListener</li>
+</ul>
+<p><em>设计模式从来都不是单个模式的独立使用。在实际应用中，通常是将多个设计模式混合使用</em></p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><h3 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h3><p>Simple Factory Pattern<br>是指由一个工厂对象决定创建哪一种产品类的实例，但它不属于 GoF 的 23 种设计模式。</p>
+<p>示例：<br>JDK 的 Calendar#getInstance<br>logback 的 LoggerFactory#getLogger</p>
+<p>总结：<br>适用于工厂类负责创建的对象较少的场景；<br>工厂类的职责相对过重，不易于扩展过于复杂的产品结构。</p>
+<h3 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h3><p>Factory Method Pattern<br>是指定义一个创建对象的接口，但让实现这个接口的类来决定实例化哪个类，工厂方法模式让类的实例化推迟到子类中进行。<br><em>在工厂方法模式中用户只需要关心所需产品对应的工厂，无需关心创建细节，而且加入新的产品时符合开闭原则。</em></p>
+<p>示例：<br>logback  ILoggerFactory</p>
+<p>工厂方法模式适用一下场景：</p>
+<ul>
+<li>创建对象需要大量重复的代码</li>
+<li>客户端(应用层)不依赖于产品类实例如何被创建、如何被实现等细节。</li>
+<li>一个类通过其子类来指定创建哪个对象</li>
+</ul>
+<p>工厂方法模式的缺点：</p>
+<ul>
+<li>类的个数容易过多，增加复杂度</li>
+<li>增加了系统的抽象性和理解难度</li>
+</ul>
+<h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><p>Abastract Factory Patten<br>是指创建一系列相关或互相依赖对象的接口，无须指定他们的具体类。</p>
+<p>产品族、产品系列</p>
+<p>抽象工厂模式的缺点：</p>
+<ul>
+<li>规定了所有可能被创建的产品集合，产品族中扩展新的产品困难，需要修改抽象工厂的接口</li>
+<li>增加了系统的抽象性和理解难度</li>
+</ul>
+<h3 id="利用工厂模式重构的实践案例"><a href="#利用工厂模式重构的实践案例" class="headerlink" title="利用工厂模式重构的实践案例"></a>利用工厂模式重构的实践案例</h3><p>数据库连接池</p>
+<h2 id="单例模式详解"><a href="#单例模式详解" class="headerlink" title="单例模式详解"></a>单例模式详解</h2><h3 id="单例模式的应用场景"><a href="#单例模式的应用场景" class="headerlink" title="单例模式的应用场景"></a>单例模式的应用场景</h3><p>Singleton Pattern<br>是指确保一个类在任何情况下都绝对只有一个实例，并提供一个全局访问点。</p>
+<p>示例：</p>
+<ul>
+<li>J2EE 标准中的 ServletContext、ServletContextConfig等</li>
+<li>Spring 框架应用中的 ApplicationContext</li>
+<li>数据库的连接池</li>
+</ul>
+<h3 id="饿汉式单例模式"><a href="#饿汉式单例模式" class="headerlink" title="饿汉式单例模式"></a>饿汉式单例模式</h3><p>饿汉式单例模式在类加载的时候就立即初始化，并且创建单例对象。它绝对线程安全，在线程还没出现以前就实例化了，不可能存在访问安全问题。</p>
+<p>优点：<br>没有加任何锁、执行效率比较高，用户体验比懒汉式单例模式更好。<br>缺点：<br>类加载的时候就初始化，不管用与不用都占着空间，浪费了内存。</p>
+<p>Spring IoC 容器 ApplicationContext</p>
+<p>适用于单例对象较少的情况</p>
+<h3 id="懒汉式单例模式"><a href="#懒汉式单例模式" class="headerlink" title="懒汉式单例模式"></a>懒汉式单例模式</h3><p>被外部类调用的时候内部类才会加载。</p>
+<p>双重加锁<br>静态内部类</p>
+<h3 id="反射破坏单例"><a href="#反射破坏单例" class="headerlink" title="反射破坏单例"></a>反射破坏单例</h3><p>静态内部类 构造方法做限制</p>
+<h3 id="序列化破坏单例"><a href="#序列化破坏单例" class="headerlink" title="序列化破坏单例"></a>序列化破坏单例</h3><p>反序列化后的对象会重新分配内存，即重新创建。<br>ObjectInputStream#readObject</p>
+<p><em>通过 JDK 源码分析可以看出，虽然增加 readResolve() 方法返回实例解决了单例模式被破坏的问题，但是实际上实例化了两次，只不过新创建的对象没有被返回而已。</em></p>
+<h3 id="注册式单例模式"><a href="#注册式单例模式" class="headerlink" title="注册式单例模式"></a>注册式单例模式</h3><p>又称为登记式单例模式，就是将每一个实例都登记到某一个地方，使用唯一的标识获取实例。</p>
+<h4 id="枚举式单例模式"><a href="#枚举式单例模式" class="headerlink" title="枚举式单例模式"></a>枚举式单例模式</h4><p>枚举式单例模式在静态代码块中就给 INSTANCE 进行了赋值，是饿汉式单例模式的实现。</p>
+<p>枚举类型其实通过类名和类对象类找到一个唯一的枚举对象。因此，枚举对象不可能被类加载器加载多次。</p>
+<p><em>JDK 枚举的语法特殊性及反射也为枚举保驾护航，让枚举式单例模式成为一种比较优雅的实现</em></p>
+<h4 id="容器式单例"><a href="#容器式单例" class="headerlink" title="容器式单例"></a>容器式单例</h4><p>容器式单例模式适用于实例非常多的情况，便于管理。但它是非线程安全的。</p>
+<p>示例：<br>spring 中容器式单例模式</p>
+<h3 id="线程单例实现-ThreadLocal"><a href="#线程单例实现-ThreadLocal" class="headerlink" title="线程单例实现 ThreadLocal"></a>线程单例实现 ThreadLocal</h3><p>ThreadLocal 不能保证其创建的对象是全局唯一的，但是能保证在单个线程中是唯一的，天生是线程安全的。</p>
+<p><em>ThreadLocal 将所有的对象全部放在 ThreadLocalMap 中，为每个线程都提供一个对象，实际上是以空间换时间来实现线程隔离的。</em></p>
+<h2 id="原型模式详解"><a href="#原型模式详解" class="headerlink" title="原型模式详解"></a>原型模式详解</h2><h3 id="原型模式的应用场景"><a href="#原型模式的应用场景" class="headerlink" title="原型模式的应用场景"></a>原型模式的应用场景</h3><p>Prototype Pattern<br>是指原型实例指定创建对象的种类，并且通过这些原型创建新的对象。</p>
+<p>适用场景：</p>
+<ul>
+<li>类初始化消耗资源较多</li>
+<li>使用 new 生成一个对象需要非常烦琐的过程(数据准备、访问权限等)</li>
+<li>构造函数比较复杂</li>
+<li>在循环体中产生大量对象</li>
+</ul>
+<p>示例：</p>
+<ul>
+<li>spring scope=“prototype”</li>
+<li>JSON.parseObject()</li>
+</ul>
+<h3 id="浅克隆"><a href="#浅克隆" class="headerlink" title="浅克隆"></a>浅克隆</h3><p>浅克隆复制的不是值，而是引用的地址。<br>浅克隆只是完整复制了值类型数据，没有赋值引用对象。换言之，所有的引用对象仍然指向原来的对象。</p>
+<h3 id="深克隆"><a href="#深克隆" class="headerlink" title="深克隆"></a>深克隆</h3><p>实现 Cloneabl  Serializable 接口</p>
+<h3 id="克隆破坏单例模式"><a href="#克隆破坏单例模式" class="headerlink" title="克隆破坏单例模式"></a>克隆破坏单例模式</h3><p>A: 要么单例类不实现 Cloneable 接口，要么重写 clone() 方法</p>
+<p>实例：<br>ArrayList#clone()</p>
+<h2 id="代理模式详解"><a href="#代理模式详解" class="headerlink" title="代理模式详解"></a>代理模式详解</h2><h3 id="代理模式的应用场景"><a href="#代理模式的应用场景" class="headerlink" title="代理模式的应用场景"></a>代理模式的应用场景</h3><p>Proxy Pattern<br>是指为其他对象提供一种代理，以控制对这个对象的访问。</p>
+<p>目的：</p>
+<ul>
+<li>保护目标对象</li>
+<li>增强目标对象</li>
+</ul>
+<h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><h4 id="JDK-实现方式"><a href="#JDK-实现方式" class="headerlink" title="JDK 实现方式"></a>JDK 实现方式</h4><p>JDK 动态代理采用字节重组，重新生成对象来替代原始对象，以达到动态代理的目的。<br>步骤如下：</p>
+<ol>
+<li>获取被代理对象的引用，并且获取它的所有接口，反射获取</li>
+<li>JDK 动态代理类重新生成一个新的类，同时新的类要实现被代理类实现的所有接口</li>
+<li>动态生成 Java 代码，新加的业务逻辑方法由一定的逻辑代码调用(在代码中体现)</li>
+<li>编译新生成的 Java 代码 .class 文件</li>
+<li>重新加载到 JVM 中运行</li>
+</ol>
+<p>以上过程就叫字节码重组。JDK 中有一个规范，在 ClassPath 下只要是 $ 开头的 .class 文件，一般都是自动生成的。</p>
+<h4 id="CGLib-代理调用-API"><a href="#CGLib-代理调用-API" class="headerlink" title="CGLib 代理调用 API"></a>CGLib 代理调用 API</h4><blockquote>
+<p>CGLib 代理执行代理方法的效率之所以比 JDK 的高，是因为 CGlib 采用了 FastClass 机制，它的原理简单来说就是：为代理类和被代理类各生成一个类，这个类会为代理类或被代理类的方法分配一个 index(int 类型)，这个 index 当做一个入参，FastClass 就可以直接定位到要调用的方法并直接进行调用，省去了反射调用，所以调用效率比 JDK 代理通过反射调用高。</p>
+</blockquote>
+<p>FastClass 并不是跟代理类一起生成的，而是在第一次执行 MethodProxy 的 invoke() 或 invokeSuper() 方法时生成的。</p>
+<h4 id="CGLib-和-JDK-动态代理对比"><a href="#CGLib-和-JDK-动态代理对比" class="headerlink" title="CGLib  和 JDK 动态代理对比"></a>CGLib  和 JDK 动态代理对比</h4><ul>
+<li>JDK 动态代理实现了被代理对象的接口，CGLib 代理继承了被代理对象</li>
+<li>JDK 动态代理和 CGLib 代理都在运行期间生成字节码，JDK 动态代理直接写 Class 字节码，CGLib 代理使用 ASM 框架写 Class 字节码，CGlib 代理实现更复杂，生成代理类比 JDK 动态代理效率低。</li>
+<li>JDK 动态代理调用代理方法是通过反射机制调用的，CGLib 代理是通过 FastClass 机制直接调用方法的，CGLib 执行的效率更高。</li>
+</ul>
+<h3 id="代理模式与-Spring"><a href="#代理模式与-Spring" class="headerlink" title="代理模式与 Spring"></a>代理模式与 Spring</h3><h4 id="代理模式在-Spring-源码中的应用"><a href="#代理模式在-Spring-源码中的应用" class="headerlink" title="代理模式在 Spring 源码中的应用"></a>代理模式在 Spring 源码中的应用</h4><p>Spring 利用动态代理实现 AOP 时有两个非常重要的类：JdkDynamicAopProxy 类和 CglibAopProxy 类。</p>
+<p>Spring 中的代理选择原则</p>
+<ol>
+<li>当 Bean 有实现接口时，Spring 就会用 JDK 动态代理</li>
+<li>当 Bean 没有实现接口时，Spring 就会用 CGLib 代理</li>
+<li>Spring 可以通过配置强制使用 CGLib 代理，需加入配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span> <span class="attr">proxy-target-class</span>=<span class="string">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="静态代理和动态代理的本质区别"><a href="#静态代理和动态代理的本质区别" class="headerlink" title="静态代理和动态代理的本质区别"></a>静态代理和动态代理的本质区别</h3><ol>
+<li>静态代理只能通过手动完成代理操作，如果被代理类增加了新的方法，代理类需要同步增加，违背开闭原则。</li>
+<li>动态代理采用在运行时动态生成代码的方式，取消了被代理类的扩展限制，遵循开闭原则。</li>
+<li>若动态代理要对目标类的增强逻辑进行扩展，结合策略模式，只需要新增策略类便可完成，无语修改代理类的代码。</li>
+</ol>
+<h3 id="代理模式的优缺点"><a href="#代理模式的优缺点" class="headerlink" title="代理模式的优缺点"></a>代理模式的优缺点</h3><p>优点：</p>
+<ol>
+<li>代理模式能将代理对象与真实被调用目标对象分离。</li>
+<li>在一定程度上降低了系统的耦合性，扩展性好。</li>
+<li>可以起到保护目标对象的作用。</li>
+<li>可以增强目标对象的功能。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>代理模式会造成系统设计中类的数量增加。</li>
+<li>在客户端和目标对象中增加一个代理对象，会导致请求处理速度变慢。</li>
+<li>增加了系统的复杂度。</li>
+</ol>
+<h2 id="委派模型详解"><a href="#委派模型详解" class="headerlink" title="委派模型详解"></a>委派模型详解</h2><h3 id="委派模型定义及应用场景"><a href="#委派模型定义及应用场景" class="headerlink" title="委派模型定义及应用场景"></a>委派模型定义及应用场景</h3><p>Delegate Pattern<br>不属于 GoF 23 种设计模式<br>基本作用就是负责任务的调用和分配，跟代理模式很像，可以看作一种特殊情况下的静态的全权代理，但是代理模式注重过程，而委派模式注重结果。</p>
+<p>Spring#DispatcherServlet</p>
+<p>示例：以 Delegate 结尾的地方都实现了委派模式</p>
+<ul>
+<li>BeanDefinitionParserDelegate 根据不同类型委派不同的逻辑解析 BeanDefinition</li>
+</ul>
+<h2 id="策略模式详解"><a href="#策略模式详解" class="headerlink" title="策略模式详解"></a>策略模式详解</h2><p>Strategy Patten<br>是指定义了算法家族并分别封装起来，让他们之间可以互相替换，此模式使得算法的变化不会影响使用算法的用户。</p>
+<h3 id="策略模式应用场景"><a href="#策略模式应用场景" class="headerlink" title="策略模式应用场景"></a>策略模式应用场景</h3><ul>
+<li>系统中有很多类，而他们的区别仅仅在于行为不同</li>
+<li>一个系统需要动态地在几种算法中选择一种</li>
+</ul>
+<h3 id="用策略模式实现选择支付方式的业务场景"><a href="#用策略模式实现选择支付方式的业务场景" class="headerlink" title="用策略模式实现选择支付方式的业务场景"></a>用策略模式实现选择支付方式的业务场景</h3><h3 id="策略模式在-JDK-源码中的体现"><a href="#策略模式在-JDK-源码中的体现" class="headerlink" title="策略模式在 JDK 源码中的体现"></a>策略模式在 JDK 源码中的体现</h3><p>Comparator 接口的 compare 方法</p>
+<ul>
+<li>Arrays类的 parallelSort 方法</li>
+<li>TreeMap 类的构造方法</li>
+</ul>
+<p>Spring</p>
+<ul>
+<li>Spring 中 Resource 接口</li>
+<li>Spring 的初始化，InstantiationStrategy</li>
+</ul>
+<h3 id="策略模式的优缺点"><a href="#策略模式的优缺点" class="headerlink" title="策略模式的优缺点"></a>策略模式的优缺点</h3><p>优点</p>
+<ul>
+<li>策略模式符合开闭原则</li>
+<li>策略模式可避免使用多重条件语句，如 if…else 语句、switch 语句</li>
+<li>使用策略模式可以提高算法的保密性和安全性</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>客户端必须知道所有的策略，并且自行决定使用哪一个策略类</li>
+<li>代码中会产生非常多的策略类，增加了代码的维护难度</li>
+</ul>
+<h3 id="委派模式与策略模式的综合应用"><a href="#委派模式与策略模式的综合应用" class="headerlink" title="委派模式与策略模式的综合应用"></a>委派模式与策略模式的综合应用</h3><p>DispatcherServlet</p>
+<h2 id="模板模式详解"><a href="#模板模式详解" class="headerlink" title="模板模式详解"></a>模板模式详解</h2><p>又叫模板方法模式<br>Template Method Pattern<br>是指定义一个算法的骨架，并允许子类为一个或者多个步骤提供实现。</p>
+<h3 id="模板模式的应用场景"><a href="#模板模式的应用场景" class="headerlink" title="模板模式的应用场景"></a>模板模式的应用场景</h3><ul>
+<li>一次性实现一个算法的不变部分，并将可变的行为留给子类来实现。</li>
+<li>各子类中公共的行为被提取出来并集中到一个公共的父类中，从而避免代码重复。</li>
+</ul>
+<p>设计钩子方法的主要目的是干预执行流程，使得控制行为更加灵活，更符合实际业务的需求。<br>钩子方法的返回值一般为适合条件分支语句的返回值。</p>
+<h3 id="利用模板模式重构-JDBC-操作业务场景"><a href="#利用模板模式重构-JDBC-操作业务场景" class="headerlink" title="利用模板模式重构 JDBC 操作业务场景"></a>利用模板模式重构 JDBC 操作业务场景</h3><p>JdbcTemplate</p>
+<h3 id="模板模式在源码中的体现"><a href="#模板模式在源码中的体现" class="headerlink" title="模板模式在源码中的体现"></a>模板模式在源码中的体现</h3><ul>
+<li>AbstractList</li>
+<li>AbstractSet</li>
+<li>AbstractMap</li>
+<li>HttpServlet 的 service doGet doPost</li>
+<li>Mybatis 框架中的 BaseExecutor 类</li>
+</ul>
+<h3 id="模板模式的优缺点"><a href="#模板模式的优缺点" class="headerlink" title="模板模式的优缺点"></a>模板模式的优缺点</h3><p>优点</p>
+<ul>
+<li>利用模板模式将相同处理逻辑的代码放到抽象父类中，可以提高代码的复用性。</li>
+<li>将不同的代码放到不同的子类中，通过对子类的扩展增加新的行为，可以提高代码的扩展性。</li>
+<li>把不变的行为写在父类中，去除子类的重复代码，提供了一个很好的代码复用平台，符合开闭原则。</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>每个抽象类都需要一个子类来实现，导致了类的数量增加。</li>
+<li>类数量的增加间接地增加了系统的复杂性。</li>
+<li>因为继承关系自身的缺点，如果父类添加新的抽象方法，所有子类都要改一遍。</li>
+</ul>
+<h2 id="适配器模式详解"><a href="#适配器模式详解" class="headerlink" title="适配器模式详解"></a>适配器模式详解</h2><p>Adapter Patten<br>是指将一个类的接口转换成用户期望的另一个接口，使原本接口不兼容的类可以一起工作，属于结构型设计模式。</p>
+<h3 id="适配器模式的应用场景"><a href="#适配器模式的应用场景" class="headerlink" title="适配器模式的应用场景"></a>适配器模式的应用场景</h3><ul>
+<li>已经存在的类的方法和需求不匹配(方法结果相同或相似)的情况。</li>
+<li>适配器模式不是软件初始阶段考虑的设计模式，是随着软件的发展，由于不同产品、不同厂家造成功能类似而接口不同的问题的解决方案，有点亡羊补牢的感觉。</li>
+</ul>
+<h3 id="重构第三方登录自由适配的业务场景"><a href="#重构第三方登录自由适配的业务场景" class="headerlink" title="重构第三方登录自由适配的业务场景"></a>重构第三方登录自由适配的业务场景</h3><h3 id="适配器模式在源码中的体现"><a href="#适配器模式在源码中的体现" class="headerlink" title="适配器模式在源码中的体现"></a>适配器模式在源码中的体现</h3><p>Spring AOP 中的 AdvisorAdapter 类有三个实现类：</p>
+<ul>
+<li>MethodBeforeAdviceAdapter</li>
+<li>AfterReturningAdviceAdapter</li>
+<li>ThrowsAdviceAdapter</li>
+</ul>
+<p>Spring MVC 中的 HandlerAdapter 类，调用的关键代码在 DispatcherServlet#doDispatch</p>
+<h3 id="适配器模式的优缺点"><a href="#适配器模式的优缺点" class="headerlink" title="适配器模式的优缺点"></a>适配器模式的优缺点</h3><p>优点：</p>
+<ul>
+<li>能提高类的透明性和复用性，现有的类会被复用但不需要改变</li>
+<li>目标类和适配器类解耦，可以提高程序的扩展性</li>
+<li>在很多业务场景中符合开闭原则</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>在适配器代码编写过程中需要进行全面考虑，可能会增加系统的复杂性</li>
+<li>增加了代码的阅读难度，降低了代码的可读性，过多使用适配器会使系统的代码变得凌乱</li>
+</ul>
+<h2 id="装饰者模式详解"><a href="#装饰者模式详解" class="headerlink" title="装饰者模式详解"></a>装饰者模式详解</h2><p>Decorator Paftern<br>是指在不改变原有对象的基础上，将功能附加到对象上，提供了比继承更有弹性的方案(扩展原有对象的功能)，属于结构型模式。</p>
+<h3 id="装饰者模式的应用场景"><a href="#装饰者模式的应用场景" class="headerlink" title="装饰者模式的应用场景"></a>装饰者模式的应用场景</h3><ul>
+<li>扩展一个类的功能或给一个类添加附加职责</li>
+<li>动态给一个对象添加功能，这些功能可以再动态地撤销</li>
+</ul>
+<p><em>装饰者模式最本质的特征是将原有类的附加功能抽离出来，简化原有类的逻辑。</em><br>抽象的装饰者是可有可无的，具体可以根据业务模型来选择。</p>
+<h3 id="装饰者模式和适配器模式对比"><a href="#装饰者模式和适配器模式对比" class="headerlink" title="装饰者模式和适配器模式对比"></a>装饰者模式和适配器模式对比</h3><p>装饰者模式和适配器模式都是包装模式(Wrapper Pattern)，装饰者模式也是一种特殊的代理模式。</p>
+<h3 id="装饰者模式在源码中的应用"><a href="#装饰者模式在源码中的应用" class="headerlink" title="装饰者模式在源码中的应用"></a>装饰者模式在源码中的应用</h3><ul>
+<li>在 JDK 中体现最明显的类就是 IO 相关的类</li>
+<li>Spring 中的 TransactionAwareCacheDecorator 类，这个类主要用来处理事务缓存，是对 Cache 的一个包装。</li>
+<li>MyBatis 的 org.apache.ibatis.cache.Cache 类，比如 FifoCache 是先入先出算法的缓存，LruCache 是最近很少使用的缓存，TransactionalCache 是事务相关的缓存。</li>
+</ul>
+<h3 id="装饰者模式的优缺点"><a href="#装饰者模式的优缺点" class="headerlink" title="装饰者模式的优缺点"></a>装饰者模式的优缺点</h3><p>优点：</p>
+<ul>
+<li>装饰者模式是继承的有力补充，且比继承灵活，可以在不改变原有对象的情况下动态地给一个对象扩展功能，即插即用。</li>
+<li>使用不同的装饰类及这些装饰类的排列组合，可以实现不同的效果。</li>
+<li>装饰者模式完全符合开闭原则。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>会出现更多的代码、更多的类，增加程序的复杂性。</li>
+<li>动态装饰时，多层装饰会更加复杂。</li>
+</ul>
+<h2 id="观察者模式详解"><a href="#观察者模式详解" class="headerlink" title="观察者模式详解"></a>观察者模式详解</h2><p>Observe Patten<br>定义了对象之间的一对多依赖，让多个观察者对象同时监听一个主体对象，当主体对象发生变化时，它的所有依赖者(观察者)都会收到通知并更新，属于行为型模式。</p>
+<h3 id="观察者模式的应用场景"><a href="#观察者模式的应用场景" class="headerlink" title="观察者模式的应用场景"></a>观察者模式的应用场景</h3><p>主要用于在关联行为之间建立一套触发机制的场景。</p>
+<h3 id="观察者模式在源码中的应用"><a href="#观察者模式在源码中的应用" class="headerlink" title="观察者模式在源码中的应用"></a>观察者模式在源码中的应用</h3><p>Spring 中的 ContextLoaderListener 类实现了 ServletContextListener 接口，ServletContextListener 接口又继承了 EventListener 接口</p>
+<h3 id="基于-Guava-API-轻松落地观察者模式"><a href="#基于-Guava-API-轻松落地观察者模式" class="headerlink" title="基于 Guava API 轻松落地观察者模式"></a>基于 Guava API 轻松落地观察者模式</h3><h3 id="观察者模式的优缺点"><a href="#观察者模式的优缺点" class="headerlink" title="观察者模式的优缺点"></a>观察者模式的优缺点</h3><p>优点：</p>
+<ul>
+<li>在观察者和被观察者之间建立了一个抽象的耦合</li>
+<li>观察者模式支持广播通信</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>观察者之间有过多的细节依赖、时间消耗多，程序的复杂性更高</li>
+<li>使用不当会出现循环调用</li>
+</ul>
+<h2 id="各种设计模式的总结与对比"><a href="#各种设计模式的总结与对比" class="headerlink" title="各种设计模式的总结与对比"></a>各种设计模式的总结与对比</h2><p><em>设计模式其实是一门艺术。设计模式来源于生活，不要为了套用设计模式而使用设计模式。</em></p>
+<p>设计模式是经验之谈，总结的是前人的经验，提供给后人借鉴使用。</p>
+<p>设计模式可以帮助我们提升代码的可读性、可扩展性，降低维护成本，解决复杂的业务问题。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="J 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/24/面向服务的体系架构/" rel="next" title="面向服务的体系架构">
+                <i class="fa fa-chevron-left"></i> 面向服务的体系架构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="J">
+            
+              <p class="site-author-name" itemprop="name">J</p>
+              <p class="site-description motion-element" itemprop="description">Was mich nicht umbringt, macht mich stärker.</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#软件架构设计原则"><span class="nav-number">1.</span> <span class="nav-text">软件架构设计原则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开闭原则"><span class="nav-number">1.1.</span> <span class="nav-text">开闭原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖倒置原则"><span class="nav-number">1.2.</span> <span class="nav-text">依赖倒置原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单一职责原则"><span class="nav-number">1.3.</span> <span class="nav-text">单一职责原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口隔离原则"><span class="nav-number">1.4.</span> <span class="nav-text">接口隔离原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迪米特原则"><span class="nav-number">1.5.</span> <span class="nav-text">迪米特原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#里氏替换原则"><span class="nav-number">1.6.</span> <span class="nav-text">里氏替换原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合成复用原则"><span class="nav-number">1.7.</span> <span class="nav-text">合成复用原则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-中常用的设计模式"><span class="nav-number">2.</span> <span class="nav-text">Spring 中常用的设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.1.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单工厂模式"><span class="nav-number">2.1.1.</span> <span class="nav-text">简单工厂模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂方法模式"><span class="nav-number">2.1.2.</span> <span class="nav-text">工厂方法模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">2.1.3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用工厂模式重构的实践案例"><span class="nav-number">2.1.4.</span> <span class="nav-text">利用工厂模式重构的实践案例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式详解"><span class="nav-number">2.2.</span> <span class="nav-text">单例模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式的应用场景"><span class="nav-number">2.2.1.</span> <span class="nav-text">单例模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#饿汉式单例模式"><span class="nav-number">2.2.2.</span> <span class="nav-text">饿汉式单例模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式单例模式"><span class="nav-number">2.2.3.</span> <span class="nav-text">懒汉式单例模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反射破坏单例"><span class="nav-number">2.2.4.</span> <span class="nav-text">反射破坏单例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化破坏单例"><span class="nav-number">2.2.5.</span> <span class="nav-text">序列化破坏单例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册式单例模式"><span class="nav-number">2.2.6.</span> <span class="nav-text">注册式单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#枚举式单例模式"><span class="nav-number">2.2.6.1.</span> <span class="nav-text">枚举式单例模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器式单例"><span class="nav-number">2.2.6.2.</span> <span class="nav-text">容器式单例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程单例实现-ThreadLocal"><span class="nav-number">2.2.7.</span> <span class="nav-text">线程单例实现 ThreadLocal</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型模式详解"><span class="nav-number">2.3.</span> <span class="nav-text">原型模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式的应用场景"><span class="nav-number">2.3.1.</span> <span class="nav-text">原型模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浅克隆"><span class="nav-number">2.3.2.</span> <span class="nav-text">浅克隆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深克隆"><span class="nav-number">2.3.3.</span> <span class="nav-text">深克隆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#克隆破坏单例模式"><span class="nav-number">2.3.4.</span> <span class="nav-text">克隆破坏单例模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式详解"><span class="nav-number">2.4.</span> <span class="nav-text">代理模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理模式的应用场景"><span class="nav-number">2.4.1.</span> <span class="nav-text">代理模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态代理"><span class="nav-number">2.4.2.</span> <span class="nav-text">静态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理"><span class="nav-number">2.4.3.</span> <span class="nav-text">动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-实现方式"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">JDK 实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CGLib-代理调用-API"><span class="nav-number">2.4.3.2.</span> <span class="nav-text">CGLib 代理调用 API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CGLib-和-JDK-动态代理对比"><span class="nav-number">2.4.3.3.</span> <span class="nav-text">CGLib  和 JDK 动态代理对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理模式与-Spring"><span class="nav-number">2.4.4.</span> <span class="nav-text">代理模式与 Spring</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代理模式在-Spring-源码中的应用"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">代理模式在 Spring 源码中的应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态代理和动态代理的本质区别"><span class="nav-number">2.4.5.</span> <span class="nav-text">静态代理和动态代理的本质区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理模式的优缺点"><span class="nav-number">2.4.6.</span> <span class="nav-text">代理模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委派模型详解"><span class="nav-number">2.5.</span> <span class="nav-text">委派模型详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#委派模型定义及应用场景"><span class="nav-number">2.5.1.</span> <span class="nav-text">委派模型定义及应用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略模式详解"><span class="nav-number">2.6.</span> <span class="nav-text">策略模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#策略模式应用场景"><span class="nav-number">2.6.1.</span> <span class="nav-text">策略模式应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用策略模式实现选择支付方式的业务场景"><span class="nav-number">2.6.2.</span> <span class="nav-text">用策略模式实现选择支付方式的业务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#策略模式在-JDK-源码中的体现"><span class="nav-number">2.6.3.</span> <span class="nav-text">策略模式在 JDK 源码中的体现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#策略模式的优缺点"><span class="nav-number">2.6.4.</span> <span class="nav-text">策略模式的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#委派模式与策略模式的综合应用"><span class="nav-number">2.6.5.</span> <span class="nav-text">委派模式与策略模式的综合应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板模式详解"><span class="nav-number">2.7.</span> <span class="nav-text">模板模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模板模式的应用场景"><span class="nav-number">2.7.1.</span> <span class="nav-text">模板模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用模板模式重构-JDBC-操作业务场景"><span class="nav-number">2.7.2.</span> <span class="nav-text">利用模板模式重构 JDBC 操作业务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板模式在源码中的体现"><span class="nav-number">2.7.3.</span> <span class="nav-text">模板模式在源码中的体现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板模式的优缺点"><span class="nav-number">2.7.4.</span> <span class="nav-text">模板模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适配器模式详解"><span class="nav-number">2.8.</span> <span class="nav-text">适配器模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器模式的应用场景"><span class="nav-number">2.8.1.</span> <span class="nav-text">适配器模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重构第三方登录自由适配的业务场景"><span class="nav-number">2.8.2.</span> <span class="nav-text">重构第三方登录自由适配的业务场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器模式在源码中的体现"><span class="nav-number">2.8.3.</span> <span class="nav-text">适配器模式在源码中的体现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器模式的优缺点"><span class="nav-number">2.8.4.</span> <span class="nav-text">适配器模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰者模式详解"><span class="nav-number">2.9.</span> <span class="nav-text">装饰者模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰者模式的应用场景"><span class="nav-number">2.9.1.</span> <span class="nav-text">装饰者模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰者模式和适配器模式对比"><span class="nav-number">2.9.2.</span> <span class="nav-text">装饰者模式和适配器模式对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰者模式在源码中的应用"><span class="nav-number">2.9.3.</span> <span class="nav-text">装饰者模式在源码中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰者模式的优缺点"><span class="nav-number">2.9.4.</span> <span class="nav-text">装饰者模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#观察者模式详解"><span class="nav-number">2.10.</span> <span class="nav-text">观察者模式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者模式的应用场景"><span class="nav-number">2.10.1.</span> <span class="nav-text">观察者模式的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者模式在源码中的应用"><span class="nav-number">2.10.2.</span> <span class="nav-text">观察者模式在源码中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于-Guava-API-轻松落地观察者模式"><span class="nav-number">2.10.3.</span> <span class="nav-text">基于 Guava API 轻松落地观察者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者模式的优缺点"><span class="nav-number">2.10.4.</span> <span class="nav-text">观察者模式的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种设计模式的总结与对比"><span class="nav-number">2.11.</span> <span class="nav-text">各种设计模式的总结与对比</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">J</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66145475";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <script>
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item) > -1;
+    });
+    new Valine({
+      el: '#comments' ,
+      verify: false,
+      notify: false,
+      appId: 'NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz',
+      appKey: 'sP953PkRs8uUidATLvUGUFPw',
+      placeholder: 'Just go go',
+      avatar: 'mm',
+      meta:guest,
+      pageSize: '10' || 10,
+      visitor: false
+    });
+  </script>
+
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "NVnljNdQ2VDzssYfxv76bDgA-gzGzoHsz",
+                'X-LC-Key': "sP953PkRs8uUidATLvUGUFPw",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
